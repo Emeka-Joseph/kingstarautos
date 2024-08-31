@@ -1,0 +1,12 @@
+# Ignore picture folder
+pictures/
+instance/
+
+# Ignore virtual environments
+.venv/
+.vkings/
+
+
+# Common Python files to ignore
+*.pyc
+__pycache__/
