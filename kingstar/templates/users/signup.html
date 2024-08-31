@@ -1,0 +1,42 @@
+{% extends 'users/index.html' %}
+{% block categories%} {% endblock%}
+{% block slider%} 
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-md-6 bgimage  align-items-center d-flex justify-content-center" style=" color: red; background-image: url({{url_for('static', filename='images/lotsofcars.jpeg')}})">
+
+            <span style="font-size: 2rem; font-weight: bolder;">KINGSTARAUTOS</span>
+			  
+        </div>
+
+        <div class="col-md-5">
+           
+            <div class="signup-form">
+                <h2>Sign Up</h2>
+                <form method="POST" action="{{ url_for('signup') }}">
+                    {{ form.hidden_tag() }}
+                    {{ form.first_name(placeholder="First Name")  }}
+                    {{ form.last_name(placeholder="Last Name") }}
+                    {{ form.email(placeholder="Email") }}
+                    {{ form.username(placeholder="Username") }}
+                    {{ form.user_phone(placeholder="Phone Number") }}
+                    {{ form.password(placeholder="Password") }}
+                    {{ form.confirm_password(placeholder="Confirm Password") }}
+                    {{ form.submit(class="submit-btn") }}
+                </form>
+            </div>
+        </div>
+
+       
+    </div>
+</div>
+
+{% endblock slider%}
+{% block ads%}  {% endblock ads%}
+{% block body%}  {% endblock body%}
+
+
+
+    

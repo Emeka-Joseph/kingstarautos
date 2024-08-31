@@ -1,0 +1,66 @@
+{% extends 'users/index.html' %}
+
+{%block body%} 
+<div class="container-fluid mt-5 mx-auto">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-5">
+            <form method="post" action="">
+                <div class="card">
+                    <input type="checkbox" id="chk" aria-hidden="true" name="" class="form-control">
+                        <div class="content">
+                            <div class="front">
+                                <div class="inner">
+            <legend class="text-center border-bottom mb-4">Log in</legend>
+            {{ form.csrf_token }} 
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+              {% endfor %}
+            {% endif %}
+            
+            {% endwith %}
+            
+            <div class="txt_field form-group">
+            {% if form.email.errors %}
+                {{ form.email (class="is_invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.email.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% else %}
+                {{ form.email (class="form-control") }}
+            {% endif %}
+            </div>
+            
+            <div class="txt_field form-group">
+            {% if form.password.errors %}
+                {{ form.password (class="is_invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.password.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% else %}
+                {{ form.password (class="form-control") }}
+            {% endif %}
+            </div>
+            
+            
+            {{ form.submit (class="mainbtn form-control bg-primary text-light") }}
+            <label for="chk" aria-hidden="true">Forget Password?</label>
+            
+            <div class="formlink">
+                <span class="ms-5">Not Registered? <a href='{{url_for("signup")}}'>Sign up here</a></span>
+            </div></div></div></div>
+            
+                </form>
+        </div>
+    </div>
+
+</div>
+{%endblock%}

@@ -1,0 +1,37 @@
+
+{% extends 'users/index.html' %}
+
+{% block slider%} 
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-10 ">
+                <h2>Upload Vehicle</h2>
+        <form action="{{ url_for('upload_vehicle') }}" method="POST" enctype="multipart/form-data">
+            <div class="form-group text-danger">
+                <label for="name">Vehicle Name</label>
+                <input type="text" class="form text-danger" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" class="form text-danger" id="price" name="price" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="image">Vehicle Image</label>
+                <input type="file" class="form-file" id="image" name="image" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload Vehicle</button>
+        </form>
+        
+            </div>
+        </div>  
+    </div>
+
+    
+{% endblock slider%}
+{% block categories %} {%endblock%}
+{% block ads%}  {% endblock ads%}
+{% block body%}  {% endblock body%}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{url_for('static', filename='bootstrap/js/bootstrap.js')}}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

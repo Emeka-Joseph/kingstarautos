@@ -1,0 +1,97 @@
+
+{% extends 'users/index.html' %}
+
+{% block slider%} 
+    <div class="container mt-5">
+       
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#postPremiumAdModal">
+            <i class="fas fa-plus"></i> Post Premium Ad
+        </button>
+
+        <!-- Modal for Posting Premium Ad -->
+        <div class="modal fade" id="postPremiumAdModal" tabindex="-1" aria-labelledby="postPremiumAdModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="postPremiumAdModalLabel">Post a Premium Ad</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="postPremiumAdForm" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="price" class="form-label">Price</label>
+                                <input type="number" class="form" id="price" name="price" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="year_of_prod" class="form-label">Year of Production</label>
+                                <input type="number" class="form" id="year_of_prod" name="year_of_prod" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="model" class="form-label">Model</label>
+                                <input type="text" class="form" id="model" name="model" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="town" class="form-label">Town</label>
+                                <input type="text" class="form" id="town" name="town" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="state" class="form-label">State</label>
+                                <input type="text" class="form" id="state" name="state" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Image</label>
+                                <input type="file" class="form" id="image" name="image" accept="image/*" required>
+                            </div>
+                            <button type="submit" class="btn btn-success">Submit Ad</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    
+{% endblock slider%}
+{% block categories %} {%endblock%}
+{% block ads%}  {% endblock ads%}
+{% block body%}  {% endblock body%}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{url_for('static', filename='bootstrap/js/bootstrap.js')}}"></script>
+    <script>
+    $(document).ready(function() {
+        $('#postPremiumAdForm').on('submit', function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            
+            $.ajax({
+    url: '/post_premium_ad',
+    type: 'POST',
+    data: formData,
+    success: function(response) {
+        if (response.success) {
+            alert('Premium Ad posted successfully!');
+            $('#postPremiumAdModal').modal('hide');
+            location.reload();
+        } else {
+            alert('Error: ' + response.message);
+        }
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+        console.error('AJAX Error:', textStatus, errorThrown);
+        alert('Error posting Premium Ad. Please check the console and try again.');
+    },
+    cache: false,
+    contentType: false,
+    processData: false,
+    });
+        });
+    });
+
+    $('#postListingForm').on('submit', function(e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+
+});
+    </script>

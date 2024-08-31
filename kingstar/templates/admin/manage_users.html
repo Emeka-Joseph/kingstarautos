@@ -1,0 +1,41 @@
+{% extends 'admin/admin_index.html' %}
+
+{% block dash %} 
+
+        <h4 class="my-5" style="color: white;">The List below contains all the users on the platform </h4> 
+        
+        <div class="table-container">
+
+            <table class="table table-bordered mt-5 table-responsive" style="color: white">
+                <thead>
+                    <tr>
+                        <th>Serial</th>
+                        <th>User_ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th> 
+                        <th>Email Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   
+                    {% for i in allusers %}
+ 
+                    <tr >
+                        <td class="cat">{{ loop.index }}</td>
+                        <td class="cat">{{i.user_id}}</td>
+                        <td class="cat"> {{i.user_fname}}  </td>
+                        <td class="cat"> {{i.user_lname}}  </td>
+                        <td class="cat"> {{i.user_email}}  </td>
+                        
+                        <!--   <td><a href="{{url_for('delete',id=i.user_id)}}" class="btn btn-danger btn-sm" onclick="return confirm('Do you really want to delete this user?')"> <i class="fa fa-trash">Delete</i></a></td> -->
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+            
+
+   
+{% endblock %}
+

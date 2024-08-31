@@ -1,0 +1,40 @@
+{% extends 'admin/admin_index.html' %}
+
+{% block dash %} 
+<div class="row" style="display: flex; justify-content: center; background-color:  rgb(3, 3, 93);">
+    <div class="col-md-10">
+        <h4 class="my-5" style="color: white;">The List below contains all the users' RESULTS on the platform </h4>  
+
+        
+        <div class="scrollable-table">
+        <table class="table mt-5 table-responsive-sm d-sm-table-cell " style="color: white; text-decoration-color: white;">
+            <thead>
+                <tr>
+                    <th>Serial</th>
+                    <th>Message_ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Subject</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in allmessages | sort(attribute='contact_id', reverse=true) %}
+                <tr>
+                    <td class="cat">{{ loop.index }}</td>
+                    <td class="cat">{{ r.contact_id }}</td>
+                    <td class="cat">{{ r.contact_name }}</td>
+                    <td class="cat">{{ r.contact_email }}</td>
+                    <td class="cat">{{ r.contact_subject }}</td>
+                    <td class="cat">{{ r.contact_content }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+        
+
+    </div>
+</div> 
+{% endblock %}
+

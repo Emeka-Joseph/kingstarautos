@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kingstarautos</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='bootstrap/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+	<style>
+		#premium-ads-container {
+			display: flex;
+			transition: transform 1s ease;
+		}
+		.premium-ad-item {
+			flex: 0 0 20%;
+			max-width: 20%;
+			padding: 0 10px;
+			transition: opacity 0.5s ease;
+		}
+	</style>
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+   
+	  
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark p-4" >
+        <div class="container-fluid align-items-center" >
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav" style="justify-content: center;">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('index')}}"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Car Swap</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('upload_vehicle')}}">images</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Car Rentals</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Sell Your Vehicle</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Blog</a>
+                    </li>
+                </ul>
+				{% if not session.get('loggedin') %}
+					<div class="navbar-nav mx-5">
+						<a class="nav-item nav-link" href="{{ url_for('signin') }}">
+							<i class="fas fa-sign-in-alt"></i> Login
+						</a>
+						<a class="nav-item nav-link" href="#"><i class="fas fa-user-plus"></i> Register</a>
+					</div>
+				{% else %}
+					<div class="navbar-nav mx-5">
+						<a class="nav-item nav-link text-danger" href="{{ url_for('signout') }}">
+							<i class="fas fa-sign-out-alt"></i> Logout
+						</a>
+					</div>
+				{% endif %}
+            </div>
+        </div>
+    </nav>	
+	
+	<!-- search chamber -->
+	  <div class="container-fluid mt-4">
+		<div class="row g-2 text-center align-items-center">
+		  <div class="col-md-3 text-center">
+			<a href="#" class="text-danger text-decoration-none d-none d-lg-block">
+			  <span style="font-size: 1.5rem; font-weight: bolder;">KINGSTARAUTOS</span>
+			  <img src="{{url_for('static', filename='images/kingstar_logo.JPG')}}" alt="Logo" width="30%">
+			</a>
+		  </div>
+		  <div class="col-md-3">
+			<input type="text" class="form-control" placeholder="ie: Toyota Camry">
+		  </div>
+		  <div class="col-md-3">
+			<select class="form-select">
+			  <option selected>Select a category</option>
+			  <!-- Add categories here -->
+			</select>
+		  </div>
+		  <div class="col-md-1">
+			<button class="btn btn-dark form-control ">Search</button> 
+		  </div>
+		  <div class="col-md-1">
+			
+			{% if session.get('loggedin') %}
+			 <button  class="btn btn-warning form-control" data-bs-toggle="modal" data-bs-target="#postListingModal">
+				<i class="fas fa-plus"></i> Post Ads
+			</button>
+			{% endif %}
+
+
+		  </div>
+		  
+		</div>
+	  </div>
+
+	{% with messages = get_flashed_messages(with_categories=true) %}
+    	{% if messages %}
+        	{% for category, message in messages %}
+				<div class="alert alert-{{ category }}">
+					{{ message }}
+				</div>
+        	{% endfor %}
+    	{% endif %}
+	{% endwith %}
+
+    <!-- Main Content : slide section-->
+    <div class="container mt-5">
+        <div class="row">
+                
+            <!-- Vehicle Categories -->
+
+			{% block categories %}
+            <div class="col-md-3">
+                <ul class="list-group mb-5">
+					<li class="list-group-item"> Categories</li>
+                    <a href="{{url_for('cars')}}"><li class="list-group-item tex"><i class="fas fa-car"></i> Cars</li></a>
+                    <a href=""><li class="list-group-item"><i class="fas fa-bus"></i> Buses</li></a>
+                    <a href=""><li class="list-group-item"><i class="fas fa-truck"></i> Trucks </li></a>
+					<a href=""><li class="list-group-item"><i class="fas fa-cogs"></i> Trailers</li></a>
+                    <a href=""><li class="list-group-item"><i class="fas fa-cogs"></i> Spare parts & Accessories</li></a>
+					<a href=""><li class="list-group-item"><i class="fas fa-cogs"></i> Spare Swap</li></a>
+					<a href=""><li class="list-group-item"><i class="fas fa-cogs"></i> Car Rentals</li></a>
+                </ul>
+            </div>           
+
+			{%endblock categories%}
+
+			{%block slider%}
+
+            <!-- Car Slider -->
+            <div class="col-md-6">
+                <div id="carSlider" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        {% for vehicle in featured_vehicles %}
+                            <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                
+								<img src="{{ url_for('static', filename='uploads/' + vehicle.image_url) }}" class="d-block w-100" alt="{{ vehicle.name }}" >
+                                <div class="carousel-caption d-none d-md-block">
+                                    <!--<h5>{{ vehicle.name }}</h5>
+                                    <p>₦ {{ "{:,.2f}".format(vehicle.price) }}</p>-->
+
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <a class="carousel-control-prev" href="#carSlider" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </a>
+                    <a class="carousel-control-next" href="#carSlider" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </a>
+                </div>
+            </div>
+
+			{%endblock slider%}
+
+            <!-- Sponsored Ad Section -->
+
+			{%block ads%}
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header bg-danger text-white">
+                        <i class="fas fa-ad"></i> Sponsored ad
+                    </div>
+                    <div class="card-body">
+                        <!-- Add sponsored ad content here -->
+                    </div>
+                </div>
+            </div>
+
+			{%endblock ads%}
+        </div>
+    </div>
+
+	{%block body%}
+
+	<!-- Main Content : modal form for the post_listing-->
+
+	<div class="modal fade" id="postListingModal" tabindex="-1" aria-labelledby="postListingModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="postListingModalLabel">Post a Listing</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+
+				<div class="row modal-body">
+					<div class="col-12 col-md-6 bgimage  align-items-center d-flex justify-content-center" style=" color: red; background-image: url({{url_for('static', filename='images/lotsofcars.jpeg')}})">
+			
+						<span style="font-size: 2rem; font-weight: bolder;">KINGSTARAUTOS</span>
+						  
+					</div>
+			
+					<div class="col-md-5">
+					   
+						<div class="signin-form text-danger">
+							<h2>Post a New Listing</h2>
+							<form method="POST" enctype="multipart/form-data" action="{{ url_for('post_listing') }}" class="text-light">
+								{{ form.hidden_tag() }}
+								<div>
+									{{ form.image.label }}
+									{{ form.image() }}
+								</div>
+								<div>
+									{{ form.manufacturer.label }}
+									{{ form.manufacturer() }}
+								</div>
+								<div>
+									{{ form.model.label }}
+									{{ form.model() }}
+								</div>
+								<div>
+									{{ form.price.label }}
+									{{ form.price() }}
+								</div>
+								<div>
+									{{ form.year_of_make.label }}
+									{{ form.year_of_make() }}
+								</div>
+								<div>
+									{{ form.color.label }}
+									{{ form.color() }}
+								</div>
+								<div>
+									{{ form.gear_type.label }}
+									{{ form.gear_type() }}
+								</div>
+								<div>
+									{{ form.state_used.label }}
+									{{ form.state_used() }}
+								</div>
+								<div>
+									{{ form.registered.label }}
+									{{ form.registered() }}
+								</div>
+								<div>
+									{{ form.location.label }}
+									{{ form.location() }}
+								</div>
+								<div>
+									{{ form.car_type.label }}
+									{{ form.car_type() }}
+								</div>
+								<div>
+									{{ form.fuel.label }}
+									{{ form.fuel() }}
+								</div>
+								<div>
+									{{ form.warranty.label }}
+									{{ form.warranty() }}
+								</div>
+								<div>
+									{{ form.remark.label }}
+									{{ form.remark() }}
+								</div>
+								<div>
+									{{ form.further_images.label }}
+									{{ form.further_images }}
+									<small style="color: orange;" >You can upload up to 10 additional images.</small>
+								</div>
+								<div>
+									{{ form.submit() }}
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	 <!-- Main Content : premium ads section-->
+	<div class="container mt-5 mb-5">
+		<!-- Banner --> 
+		<div class="row mb-3" style="display: flex; align-items: center;">
+			<div class="col-md-4 text-center align-items-center" style="justify-content: center; border-radius: 30%;" >
+				<div class=" p-3 rounded text-center " style=" background-color: black; border: radius 20PX; ">
+					<h3 class="text-warning">TRUSTED CAR SALES, EASY SWAPS, AND AFFORDABLE RENTALS - ALL IN ONE PLACE</h3>
+					<h4 class="text-light">Unlock a world of automotive possibilities:</h4>
+				</div>
+			</div>
+
+			<div class="col-md-8 bg-warning p-3">
+				<video id="myVideo" class="w-100" loop playsinline controls>
+					<source src="{{url_for('static', filename='images/kingstar_intro.mp4')}}" type="video/mp4">
+				  </video>
+			</div>
+		</div>
+
+		<hr>
+	
+		<!-- Premium Ads Section -->
+		<div class="row">
+			<div class="col-12  d-flex justify-content-between align-items-center premium_ads2 mb-3">
+				<h3 class="text-danger mb-0">
+					<i class="fas fa-star"></i> PREMIUM ADS
+				</h3>
+				<a href="#" class="text-success">SEE ALL ADS</a>
+			</div>
+
+			<a href="">
+				<div class="premium-ads-container">
+					<div class="premium-ads-slider">
+						<!-- Ads will be dynamically inserted here -->
+					</div>
+					<button class="prev-btn">&lt;</button>
+					<button class="next-btn">&gt;</button>
+				</div>
+				
+				<template id="ad-template" >
+					<div class="ad-item text-center" >
+						<img src="" alt="Car Image">
+						<span class="price text-danger" style="font-weight: bolder;"></span><br>
+						<span class="model" style="font-weight: bolder;"></span><br>
+						<i class="fas fa-map-marker-alt text-danger"></i> <span class="location" ></span>
+					</div>
+				</template>
+			</a>
+		</div> 
+	</div>
+
+	<!-- Main Content : vehicle listings -->
+
+	<div class="container mt-4">
+		<!-- Cars Section -->
+		<div class="row">
+			<div class="col-12 d-flex justify-content-between align-items-center mb-3">
+				<h3 class="text-success mb-0">
+					<i class="fas fa-car"></i> CARS
+				</h3>
+				<a href="#" class="text-success">SEE ALL ADS</a>
+			</div>
+		</div>
+	
+		<!-- Cars Listings -->
+		<div class="row">
+			{% for listing in listings %}
+			<div class="col-md-3 col-sm-6 col-lg-3 mb-3">
+				<div class="card">
+					<a href="{{ url_for('vehicle_details', listing_id=listing.id) }}">
+						<div class="position-relative text-center">
+							<img src="{{ url_for('static', filename='uploads/' + listing.image_filename) }}" class="card-img-top-listing " width="90%" alt="{{ listing.manufacturer }} {{ listing.model }}">
+							{% if listing.warranty %}
+							<span class="badge bg-success position-absolute top-0 start-0 m-2">
+								<i class="fas fa-shield-alt"></i> Warranty
+							</span>
+							{% endif %}
+						</div>
+					</a>
+					<div class="card-body p-2">
+						<h6 class="card-title mb-1">₦ {{ "{:,.2f}".format(listing.price) }}</h6>
+						<p class="card-text mb-1">{{ listing.year_of_make }} {{ listing.manufacturer }} {{ listing.model }}</p>
+						<small class="text-muted">
+							<i class="fas fa-palette"></i> {{ listing.color }} | <i class="fas fa-cog"></i> {{ listing.gear_type }} | <i class="fas fa-map-marker-alt"></i> {{ listing.location }}
+						</small>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+
+	{%endblock body%}
+
+	<hr>
+	<hr>
+
+	<footer class=" pt-4 pb-2">
+		<div class="container">
+		  <div class="row">
+			<div class="col-md-3">
+			  <img src="{{url_for('static', filename='images/kingstar_logo.jpg')}}" alt="AutoHub Logo" class="img-fluid mb-3" width="50%">
+			</div>
+			
+			<div class="col-md-3">
+			  <h5 class="text-success">Quick Links</h5>
+			  <ul class="list-unstyled">
+				<li><a href="#" class="text-success">Privacy Policy</a></li>
+				<li><a href="#" class="text-success">Terms of use</a></li>
+				<li><a href="#" class="text-success">Billing Policy</a></li>
+				<li><a href="#" class="text-success">About Us</a></li>
+			  </ul>
+			</div>
+			<div class="col-md-3">
+			  <h5 class="text-success">Social Network</h5>
+			  <ul class="list-unstyled">
+				<li><a href="#" class="btn btn-primary btn-sm me-1 "><i class="fab fa-facebook-f"></i> Facebook</a> &nbsp;</li>
+				<li><a href="#" class="btn btn-info btn-sm me-1 my-1"><i class="fab fa-twitter"></i> Twitter</a></li>
+				<li><a href="#" class="btn btn-danger btn-sm"><i class="fab fa-instagram"></i> Instagram</a></li>
+			  </ul>
+			</div>
+			<div class="col-md-3">
+			  <h5 class="text-success">My account</h5>
+			  <ul class="list-unstyled">
+				<li><a href="#" class="text-success"><i class="fas fa-lock"></i> Login</a></li>
+				<li><a href="#" class="text-success"><i class="fas fa-user-plus"></i> Register</a></li>
+			  </ul>
+			</div>
+		  </div>
+		</div>
+		<div class="bg-dark text-white py-2 mt-4 text-center">
+		  <div class="container">
+			<div class="row text-center">
+			  <div class="col-md-12 ">
+				<small>Copyright 2023. All right reserved | kingstarautos.com</small>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </footer>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='vehicle_details.js') }}"></script>
+	<script src="{{ url_for('static', filename='vehicle_details.js') }}"></script>
+	<script src="{{ url_for('static', filename='image_modal.js') }}"></script>
+	
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{{url_for('static', filename='custom.js')}}"></script>
+	<script src="{{url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+	
+	<script>
+		$(document).ready(function() {
+    $('#postPremiumAdForm').on('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        
+        $.ajax({
+url: '/post_premium_ad',
+type: 'POST',
+data: formData,
+success: function(response) {
+    if (response.success) {
+        alert('Premium Ad posted successfully!');
+        $('#postPremiumAdModal').modal('hide');
+        location.reload();
+    } else {
+        alert('Error: ' + response.message);
+    }
+},
+error: function(jqXHR, textStatus, errorThrown) {
+    console.error('AJAX Error:', textStatus, errorThrown);
+    alert('Error posting Premium Ad. Please check the console and try again.');
+},
+cache: false,
+contentType: false,
+processData: false,
+});
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+const slider = document.querySelector('.premium-ads-slider');
+const prevBtn = document.querySelector('.prev-btn');
+const nextBtn = document.querySelector('.next-btn');
+const template = document.getElementById('ad-template');
+let currentIndex = 0;
+let totalAds = 0;
+let visibleAds = 1;
+
+function updateVisibleAds() {
+    if (window.innerWidth >= 1200) visibleAds = 5;
+    else if (window.innerWidth >= 992) visibleAds = 4;
+    else if (window.innerWidth >= 768) visibleAds = 3;
+    else if (window.innerWidth >= 576) visibleAds = 2;
+    else visibleAds = 1;
+}
+
+// Fetch premium ads from your backend
+
+
+fetch('/get_premium_ads')
+.then(response => response.json())
+.then(ads => {
+    totalAds = ads.length;
+    // Double the ads for seamless looping
+    ads = ads.concat(ads);
+    ads.forEach(ad => {
+        const adElement = document.importNode(template.content, true);
+        const imgElement = adElement.querySelector('img');
+        imgElement.src = "{{ url_for('static', filename='uploads/') }}" + ad.image_filename;
+        imgElement.classList.add('ad-image'); // Add a class for styling
+        imgElement.alt = `${ad.year_of_prod} ${ad.model}`; // Add alt text for accessibility
+        adElement.querySelector('.price').textContent = `₦${ad.price.toLocaleString()}`;
+        adElement.querySelector('.model').textContent = `${ad.year_of_prod} ${ad.model}`;
+        adElement.querySelector('.location').textContent = `${ad.town}, ${ad.state}`;
+        slider.appendChild(adElement);
+    });
+    updateVisibleAds();
+    updateSliderPosition();
+});
+
+function updateSliderPosition() {
+    const itemWidth = slider.children[0].offsetWidth;
+    slider.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+}
+
+function slideNext() {
+    currentIndex++;
+    if (currentIndex >= totalAds) {
+        // Jump back to the start instantly
+        currentIndex = 0;
+        slider.style.transition = 'none';
+        updateSliderPosition();
+        // Force reflow
+        slider.offsetHeight;
+        slider.style.transition = 'transform 0.5s ease';
+    }
+    updateSliderPosition();
+}
+
+function slidePrev() {
+    currentIndex--;
+    if (currentIndex < 0) {
+        // Jump to the end instantly
+        currentIndex = totalAds - 1;
+        slider.style.transition = 'none';
+        updateSliderPosition();
+        // Force reflow
+        slider.offsetHeight;
+        slider.style.transition = 'transform 0.5s ease';
+    }
+    updateSliderPosition();
+}
+
+nextBtn.addEventListener('click', slideNext);
+prevBtn.addEventListener('click', slidePrev);
+
+// Auto-slide functionality
+setInterval(slideNext, 5000);  // Change slide every 5 seconds
+
+// Responsive handling
+window.addEventListener('resize', () => {
+    updateVisibleAds();
+    updateSliderPosition();
+});
+});
+
+
+	</script>
+	
+	
+
+
+
+
+	
+</body>
+</html>

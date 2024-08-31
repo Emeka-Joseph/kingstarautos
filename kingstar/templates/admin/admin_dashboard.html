@@ -1,0 +1,86 @@
+{% extends 'users/result.html' %}
+
+{% block result_chart %}  {% endblock %} 
+
+
+{% block print_result %} 
+
+<div class="row" style="display: flex; justify-content: center;">
+    <div class="col-md-10" id="result_column" >
+        <h4 class="my-5" style="color: white;">The List below contains all the users on the platform </h4>    
+            <table class="table table-striped mt-5" style="color: white; text-decoration-color: white;">
+                <thead>
+                    <tr>
+                        <th>Serial</th>
+                        <th>First Name</th>
+                        <th>Last Name</th> 
+                        <th>Email Address</th>
+                        <th>Phone Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   
+                    {% for i in allusers %}
+ 
+                    <tr >
+                        <td class="cat">{{ loop.index }}</td>
+                        <td class="cat"> {{i.user_fname}}  </td>
+                        <td class="cat"> {{i.user_lname}}  </td>
+                        <td class="cat"> {{i.user_email}}  </td>
+                        <td class="cat"> {{i.user_phone}}  </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        
+            <h4 class="my-5" style="color: white;">The List below contains all the users' RESULTS on the platform </h4>    
+            <table class="table table-striped mt-5" style="color: white; text-decoration-color: white;">
+                <thead>
+                    <tr>
+                        <th>Serial</th>
+                        <th>Employment</th>
+                        <th>Environment </th> 
+                        <th>Lifestyle</th>
+                        <th>personality</th>
+                        <th>Relationship</th>
+                        <th>Symptoms</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                   
+                    {% for r in allresults %}
+ 
+                    <tr >
+                        <td class="cat">{{ loop.index }}</td>
+                        <td class="cat"> {{r.employment}}  </td>
+                        <td class="cat"> {{r.environment}}  </td>
+                        <td class="cat"> {{r.lifestyle}}  </td>
+                        <td class="cat"> {{r.personality}}  </td>
+                        <td class="cat"> {{r.relationship}}  </td>
+                        <td class="cat"> {{r.symptoms}}  </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+
+    </div>
+</div> 
+
+{% endblock %}
+
+{% block javascript %}
+	{{super()}}		
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#downloadBtnb').click(function(){
+                window.print()
+            })
+        })
+            
+    </script> 
+{% endblock %}
+</body>
+				
+</html>
