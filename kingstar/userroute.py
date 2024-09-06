@@ -3,10 +3,10 @@ from datetime import datetime
 
 from flask import render_template, redirect, flash, session, request, url_for,flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
-from .forms import SignupForm, SigninForm, ListingForm
+from .forms import SignupForm, SigninForm, ListingForm, BlogForm, BusForm, TruckForm
 from functools import wraps
 
-from kingstar.models import Users, Contact, Vehicle, Premium_Ads, Listings
+from kingstar.models import Users, Contact, Vehicle, Premium_Ads, Listings, Blog, BusListings, TruckListings
 from kingstar import app, db
 from werkzeug.utils import secure_filename
 from flask import jsonify
@@ -61,6 +61,8 @@ def login_required(f):
 @app.route('/')
 def index():
     form = ListingForm()
+    cid = session.get('loggedin')
+    deets = db.session.query(Users).filter(Users.user_id==cid).first()
     featured_vehicles = Vehicle.query.limit(7).all()  # Get 5 vehicles for the slider
     slide = db.session.query(Vehicle).all()
     premium_ads = Premium_Ads.query.order_by(Premium_Ads.date.desc()).limit(15).all()
@@ -70,7 +72,44 @@ def index():
                            featured_vehicles=featured_vehicles, 
                            slide=slide, 
                            premium_ads=premium_ads_list,  # Use the list of dicts
-                           listings=listings, form=form)
+                           listings=listings, form=form, deets = deets)
+
+
+@app.route('/buses')
+def bus():
+    form = BusForm()
+    cid = session.get('loggedin')
+    deets = db.session.query(Users).filter(Users.user_id==cid).first()
+    featured_vehicles = Vehicle.query.limit(7).all()  # Get 5 vehicles for the slider
+    slide = db.session.query(Vehicle).all()
+    premium_ads = Premium_Ads.query.order_by(Premium_Ads.date.desc()).limit(15).all()
+    listings = BusListings.query.order_by(BusListings.date_of_post.desc()).limit(50).all()
+    
+    premium_ads_list = [premium_ad_to_dict(ad) for ad in premium_ads]
+    return render_template('users/buses.html', 
+                           featured_vehicles=featured_vehicles, 
+                           slide=slide, 
+                           premium_ads=premium_ads_list,  # Use the list of dicts
+                           listings=listings, form=form, deets = deets)
+
+
+@app.route('/trucks')
+def truck():
+    form = TruckForm()
+    cid = session.get('loggedin')
+    deets = db.session.query(Users).filter(Users.user_id==cid).first()
+    featured_vehicles = Vehicle.query.limit(7).all()  # Get 5 vehicles for the slider
+    slide = db.session.query(Vehicle).all()
+    premium_ads = Premium_Ads.query.order_by(Premium_Ads.date.desc()).limit(15).all()
+    listings = TruckListings.query.order_by(TruckListings.date_of_post.desc()).limit(50).all()
+    
+    premium_ads_list = [premium_ad_to_dict(ad) for ad in premium_ads]
+    return render_template('users/trucks.html', 
+                           featured_vehicles=featured_vehicles, 
+                           slide=slide, 
+                           premium_ads=premium_ads_list,  # Use the list of dicts
+                           listings=listings, form=form, deets = deets)
+
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -271,6 +310,110 @@ def post_listing():
 
     return render_template('users/index.html', form=form,deets=deets, mdeets=mdeets)
 
+
+
+@app.route('/post/bus', methods=['GET', 'POST'])
+def post_bus():
+    id = session.get('loggedin')
+    deets = db.session.query(Users).filter(Users.user_id==id).first()
+    mdeets = db.session.query(BusListings).filter(BusListings.listing_userid==id).first()
+    if id ==None:
+        flash('Please log in to post a listing.', 'warning')
+        return redirect(url_for('signin'))
+
+    form = BusForm()
+    if form.validate_on_submit():
+        main_image = form.image.data
+        main_image_filename = secure_filename(main_image.filename)
+        main_image.save(os.path.join(app.config['UPLOAD_FOLDER'], main_image_filename))
+
+        further_images = form.further_images.data
+        further_image_filenames = []
+        for image in further_images[:10]:  # Limit to 10 images
+            if image:
+                filename = secure_filename(image.filename)
+                image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                further_image_filenames.append(filename)
+
+        new_listing = BusListings(
+            image_filename=main_image_filename,
+            further_images=json.dumps(further_image_filenames),  # Store as JSON string
+            manufacturer=form.manufacturer.data,
+            model=form.model.data,
+            price=form.price.data,
+            year_of_make=form.year_of_make.data,
+            color=form.color.data,
+            gear_type=form.gear_type.data,
+            state_used=form.state_used.data,
+            registered=form.registered.data,
+            location=form.location.data,
+            car_type=form.car_type.data,
+            fuel=form.fuel.data,
+            warranty=form.warranty.data,
+            remark=form.remark.data,
+            listing_userid=id
+        )
+
+        db.session.add(new_listing)
+        db.session.commit()
+
+        flash('Your listing has been posted successfully!', 'success')
+        #return redirect(url_for('listings'))  # Redirect to a page showing all listings
+        return redirect(url_for('bus'))
+
+
+
+@app.route('/post/truck', methods=['GET', 'POST'])
+def post_truck():
+    id = session.get('loggedin')
+    deets = db.session.query(Users).filter(Users.user_id==id).first()
+    mdeets = db.session.query(TruckListings).filter(TruckListings.listing_userid==id).first()
+    if id ==None:
+        flash('Please log in to post a listing.', 'warning')
+        return redirect(url_for('signin'))
+
+    form = TruckForm()
+    if form.validate_on_submit():
+        main_image = form.image.data
+        main_image_filename = secure_filename(main_image.filename)
+        main_image.save(os.path.join(app.config['UPLOAD_FOLDER'], main_image_filename))
+
+        further_images = form.further_images.data
+        further_image_filenames = []
+        for image in further_images[:10]:  # Limit to 10 images
+            if image:
+                filename = secure_filename(image.filename)
+                image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                further_image_filenames.append(filename)
+
+        new_listing = TruckListings(
+            image_filename=main_image_filename,
+            further_images=json.dumps(further_image_filenames),  # Store as JSON string
+            manufacturer=form.manufacturer.data,
+            model=form.model.data,
+            price=form.price.data,
+            year_of_make=form.year_of_make.data,
+            color=form.color.data,
+            gear_type=form.gear_type.data,
+            state_used=form.state_used.data,
+            registered=form.registered.data,
+            location=form.location.data,
+            car_type=form.car_type.data,
+            fuel=form.fuel.data,
+            warranty=form.warranty.data,
+            remark=form.remark.data,
+            listing_userid=id
+        )
+
+        db.session.add(new_listing)
+        db.session.commit()
+
+        flash('Your listing has been posted successfully!', 'success')
+        #return redirect(url_for('listings'))  # Redirect to a page showing all listings
+        return redirect(url_for('truck'))
+
+
+
 @app.template_filter('from_json')
 def from_json(value):
     return json.loads(value)
@@ -279,8 +422,27 @@ def from_json(value):
 def vehicle_details(listing_id):
     listing = Listings.query.get_or_404(listing_id)
     seller = Users.query.get(listing.listing_userid)
-    return render_template('users/vehicle_details.html', listing=listing, seller=seller)
+    cid = session.get('loggedin')
+    deets = db.session.query(Users).filter(Users.user_id==cid).first()
+    return render_template('users/vehicle_details.html', listing=listing, seller=seller, deets=deets)
 
+
+@app.route('/bus/<int:listing_id>')
+def bus_details(listing_id):
+    busl = BusListings.query.get_or_404(listing_id)
+    seller = Users.query.get(busl.listing_userid)
+    cid = session.get('loggedin')
+    deets = db.session.query(Users).filter(Users.user_id==cid).first()
+    return render_template('users/bus_details.html', busl=busl, seller=seller, deets=deets)
+
+
+@app.route('/trucks/<int:listing_id>')
+def truck_details(listing_id):
+    truckl = TruckListings.query.get_or_404(listing_id)
+    seller = Users.query.get(truckl.listing_userid)
+    cid = session.get('loggedin')
+    deets = db.session.query(Users).filter(Users.user_id==cid).first()
+    return render_template('users/truck_details.html', truckl=truckl, seller=seller, deets=deets)
 
 @app.route('/get_premium_ads')
 def get_premium_ads():
@@ -294,6 +456,22 @@ def get_premium_ads():
         'image_filename': ad.image_filename
     } for ad in ads])
 
+
+
+@app.route('/blog')
+def blog():
+    all_blogs = db.session.query(Blog).order_by(Blog.created_at.desc()).all()
+    blogs = Blog.query.order_by(Blog.created_at.desc()).all()
+    cid = session.get('loggedin')
+    deets = db.session.query(Users).filter(Users.user_id==cid).first()
+    return render_template('users/blog.html', blogs=blogs, all_blogs=all_blogs, deets=deets)
+
+
+
+@app.route('/blog/<int:blog_id>')
+def blog_detail(blog_id):
+    blog = Blog.query.get_or_404(blog_id)
+    return render_template('users/blog_detail.html', blog=blog)
 
 
 @app.errorhandler(404)

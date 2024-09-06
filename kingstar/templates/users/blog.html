@@ -1,0 +1,29 @@
+{% extends 'users/index.html' %}
+
+{% block slider%} 
+<div class="container">
+    <h1>Our Blog</h1>
+    <div class="row">
+        {% for blog in blogs %}
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <a href="{{ url_for('blog_detail', blog_id=blog.id) }}"> 
+                <img src="{{ blog.blog_image }}" class="card-img-top" alt="{{ blog.blog_title }}"></a>
+                <div class="card-body">
+                    <h5 class="card-title">{{ blog.blog_title }}</h5>
+                    <p class="card-text">{{ blog.blog_body[:100] }}...</p>
+                    <p class="card-text"><small class="text-muted">{{ blog.blog_category }}</small></p>
+                    <a href="{{ url_for('blog_detail', blog_id=blog.id) }}" class="btn btn-warning">Read More</a>
+                    
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock slider%}
+{% block categories %} {%endblock%}
+{% block ads%}  {% endblock ads%}
+{% block body%}  {% endblock body%}
+

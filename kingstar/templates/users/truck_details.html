@@ -1,0 +1,104 @@
+{% extends 'users/index.html' %}
+
+
+
+<div class="container mt-4">
+    <div class="row">
+
+        {% block categories %} 
+         <!-- Premium Ads Section -->
+			
+		 
+        {{super()}}
+        
+        {%endblock%}
+    {% block slider%} 
+    <div class="col-md-6">
+        <h4 style="color: red; font-weight: bolder; "> {{truckl.year_of_make}}  {{truckl.manufacturer}}  {{truckl.model}} </h4>
+
+    
+        <i class="fas fa-calendar-alt mb-5">    {{truckl.date_of_post}} </i>
+        <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                {% set image_list = truckl.further_images|from_json %}
+                {% for image in image_list %}
+                    <div class="carousel-item {% if loop.first %}active{% endif %}">
+                        <img src="{{ url_for('static', filename='uploads/' + image) }}" class="d-block image-clickable" alt="Vehicle image" data-bs-toggle="modal" data-bs-target="#imageModal" data-index="{{ loop.index0 }}">
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <div class="carousel-indicators">
+                {% for image in image_list %}
+                    <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="{{ loop.index0 }}" {% if loop.first %}class="active" aria-current="true"{% endif %} aria-label="Slide {{ loop.index }}"></button>
+                {% endfor %}
+            </div>
+            
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <img src="" class="img-fluid" id="modalImage" alt="Large vehicle image">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="prevButton">Previous</button>
+                        <button type="button" class="btn btn-secondary" id="nextButton">Next</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Vehihcle Description</h5>
+                </div>
+                <div class="card-body">
+                    <span><b>{{ truckl.description }}</b></span><br>
+                    <span>Make: <b>{{ truckl.manufacturer }}</b></span><br>
+                    <span>Model: <b>{{ truckl.model }}</b></span><br>
+                    <span>Price: <b>{{ "{:,.2f}".format(truckl.price) }}</b></span><br>
+                    <span>Color: <b>{{ truckl.color }}</b></span><br>
+                    <span>Gear Type: <b>{{ truckl.gear_type }}</b></span><br>
+                    <span>Vehicle State: <b>{{ truckl.state_used }}</b> km</span><br>
+                    <span>Registered: <b>{{ truckl.registered }}</b></span><br>
+                    <span>Condition: <b>{{ truckl.remark }}</b></span><br>
+                    <span>Location: <b>{{ truckl.location }}</b></span><br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- For the seller's information-->
+        
+    <div class="col-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Contact Seller </h5>
+                </div>
+                <div class="card-body">
+                    <p>Name: {{ seller.user_fname }} {{ seller.user_lname }}</p>
+                    <p>Email: {{ seller.user_email }}</p>
+                    <p>Phone: {{ seller.user_phone }}</p>
+                </div>
+            </div>
+             
+    </div>
+   
+    </div>
+
+ </div>
+{% endblock slider%}
+
+{% block ads%}  {% endblock ads%}
+{% block body%}  {% endblock body%}
+
+
+
+
+    

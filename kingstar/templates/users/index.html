@@ -23,6 +23,8 @@
 			padding: 0 10px;
 			transition: opacity 0.5s ease;
 		}
+
+		
 	</style>
 </head>
 <body>
@@ -46,19 +48,13 @@
                         <a class="nav-link" href="#">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('upload_vehicle')}}">images</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="#">Car Rentals</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Sell Your Vehicle</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Blog</a>
+                        <a class="nav-link" href="{{url_for('blog')}}">Blog</a>
                     </li>
                 </ul>
 				{% if not session.get('loggedin') %}
@@ -66,13 +62,20 @@
 						<a class="nav-item nav-link" href="{{ url_for('signin') }}">
 							<i class="fas fa-sign-in-alt"></i> Login
 						</a>
-						<a class="nav-item nav-link" href="#"><i class="fas fa-user-plus"></i> Register</a>
+						<a class="nav-item nav-link" href="{{url_for('signup')}}"><i class="fas fa-user-plus"></i> Register</a>
 					</div>
 				{% else %}
 					<div class="navbar-nav mx-5">
+
+						
 						<a class="nav-item nav-link text-danger" href="{{ url_for('signout') }}">
 							<i class="fas fa-sign-out-alt"></i> Logout
 						</a>
+						
+					</div>
+					<span style="color: white;">Welcome | {{deets.user_lname}} </span><br> <br>
+					<div>
+
 					</div>
 				{% endif %}
             </div>
@@ -83,7 +86,7 @@
 	  <div class="container-fluid mt-4">
 		<div class="row g-2 text-center align-items-center">
 		  <div class="col-md-3 text-center">
-			<a href="#" class="text-danger text-decoration-none d-none d-lg-block">
+			<a href="{{url_for('index')}}" class="text-danger text-decoration-none d-none d-lg-block">
 			  <span style="font-size: 1.5rem; font-weight: bolder;">KINGSTARAUTOS</span>
 			  <img src="{{url_for('static', filename='images/kingstar_logo.JPG')}}" alt="Logo" width="30%">
 			</a>
@@ -103,7 +106,7 @@
 		  <div class="col-md-1">
 			
 			{% if session.get('loggedin') %}
-			 <button  class="btn btn-warning form-control" data-bs-toggle="modal" data-bs-target="#postListingModal">
+			 <button  class="btn btn-warning form-control" data-bs-toggle="modal" data-bs-target="#categoryofcar">
 				<i class="fas fa-plus"></i> Post Ads
 			</button>
 			{% endif %}
@@ -134,9 +137,9 @@
             <div class="col-md-3">
                 <ul class="list-group mb-5">
 					<li class="list-group-item"> Categories</li>
-                    <a href="{{url_for('cars')}}"><li class="list-group-item tex"><i class="fas fa-car"></i> Cars</li></a>
-                    <a href=""><li class="list-group-item"><i class="fas fa-bus"></i> Buses</li></a>
-                    <a href=""><li class="list-group-item"><i class="fas fa-truck"></i> Trucks </li></a>
+                    <a href="{{url_for('index')}}"><li class="list-group-item tex"><i class="fas fa-car"></i> Cars</li></a>
+                    <a href="{{url_for('bus')}}"><li class="list-group-item"><i class="fas fa-bus"></i> Buses</li></a>
+                    <a href="{{url_for('truck')}}"><li class="list-group-item"><i class="fas fa-truck"></i> Trucks </li></a>
 					<a href=""><li class="list-group-item"><i class="fas fa-cogs"></i> Trailers</li></a>
                     <a href=""><li class="list-group-item"><i class="fas fa-cogs"></i> Spare parts & Accessories</li></a>
 					<a href=""><li class="list-group-item"><i class="fas fa-cogs"></i> Spare Swap</li></a>
@@ -164,12 +167,9 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <a class="carousel-control-prev" href="#carSlider" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    </a>
-                    <a class="carousel-control-next" href="#carSlider" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </a>
+                 
+
+					
                 </div>
             </div>
 
@@ -195,8 +195,46 @@
 
 	{%block body%}
 
-	<!-- Main Content : modal form for the post_listing-->
+	<!-- Main Content : modal form for the post_listing-->	
 
+
+	<!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="categoryofcar" tabindex="-1" aria-labelledby="categoryofcarLabel" aria-hidden="true">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h1 class="modal-title fs-5" id="categoryofcarLabel">Select Category</h1>
+		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
+		<div class="modal-body">
+		  ...
+		</div>
+		<div class="modal-footer text-center align-items-center">
+		  
+		  <button  class="btn btn-dark form-control" data-bs-toggle="modal" data-bs-target="#postListingModal">
+			<i class="fas fa-plus"></i> Post A Car
+		</button>
+
+		<button  class="btn btn-warning form-control" data-bs-toggle="modal" data-bs-target="#postbusModal">
+			<i class="fas fa-plus"></i> Post A Bus
+		</button>
+
+		<button  class="btn btn-danger form-control" data-bs-toggle="modal" data-bs-target="#postTruckModal">
+			<i class="fas fa-plus"></i> Post A Truck/Trailer
+		</button>
+
+		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		</div>
+
+	  </div>
+	</div>
+  </div>
+
+
+  <!--postiing of car modals-->
 	<div class="modal fade" id="postListingModal" tabindex="-1" aria-labelledby="postListingModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
@@ -289,7 +327,199 @@
 			</div>
 		</div>
 	</div>
+
+
+	<!--  Bus modals-->
+	<div class="modal fade" id="postbusModal" tabindex="-1" aria-labelledby="postbusModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="postbusModalLabel">Post a Listing</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+
+				<div class="row modal-body">
+					<div class="col-12 col-md-6 bgimage  align-items-center d-flex justify-content-center" style=" color: red; background-image: url({{url_for('static', filename='images/lotsofcars.jpeg')}})">
+			
+						<span style="font-size: 2rem; font-weight: bolder;">KINGSTARAUTOS</span>
+						  
+					</div>
+			
+					<div class="col-md-5">
+					   
+						<div class="signin-form text-danger">
+							<h2>Post a New Bus</h2>
+							<form method="POST" enctype="multipart/form-data" action="{{ url_for('post_bus') }}" class="text-light">
+								{{ form.hidden_tag() }}
+								<div>
+									{{ form.image.label }}
+									{{ form.image() }}
+								</div>
+								<div>
+									{{ form.manufacturer.label }}
+									{{ form.manufacturer() }}
+								</div>
+								<div>
+									{{ form.model.label }}
+									{{ form.model() }}
+								</div>
+								<div>
+									{{ form.price.label }}
+									{{ form.price() }}
+								</div>
+								<div>
+									{{ form.year_of_make.label }}
+									{{ form.year_of_make() }}
+								</div>
+								<div>
+									{{ form.color.label }}
+									{{ form.color() }}
+								</div>
+								<div>
+									{{ form.gear_type.label }}
+									{{ form.gear_type() }}
+								</div>
+								<div>
+									{{ form.state_used.label }}
+									{{ form.state_used() }}
+								</div>
+								<div>
+									{{ form.registered.label }}
+									{{ form.registered() }}
+								</div>
+								<div>
+									{{ form.location.label }}
+									{{ form.location() }}
+								</div>
+								<div>
+									{{ form.car_type.label }}
+									{{ form.car_type() }}
+								</div>
+								<div>
+									{{ form.fuel.label }}
+									{{ form.fuel() }}
+								</div>
+								<div>
+									{{ form.warranty.label }}
+									{{ form.warranty() }}
+								</div>
+								<div>
+									{{ form.remark.label }}
+									{{ form.remark() }}
+								</div>
+								<div>
+									{{ form.further_images.label }}
+									{{ form.further_images }}
+									<small style="color: orange;" >You can upload up to 10 additional images.</small>
+								</div>
+								<div>
+									{{ form.submit() }}
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	
+
+	<!--  Truck modals-->
+	<div class="modal fade" id="postTruckModal" tabindex="-1" aria-labelledby="postTruckModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="postTruckModalLabel">Post a Listing</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+
+				<div class="row modal-body">
+					<div class="col-12 col-md-6 bgimage  align-items-center d-flex justify-content-center" style=" color: red; background-image: url({{url_for('static', filename='images/lotsofcars.jpeg')}})">
+			
+						<span style="font-size: 2rem; font-weight: bolder;">KINGSTARAUTOS</span>
+						  
+					</div>
+			
+					<div class="col-md-5">
+					   
+						<div class="signin-form text-danger">
+							<h2>Post a New Truck/Trailer</h2>
+							<form method="POST" enctype="multipart/form-data" action="{{ url_for('post_truck') }}" class="text-light">
+								{{ form.hidden_tag() }}
+								<div>
+									{{ form.image.label }}
+									{{ form.image() }}
+								</div>
+								<div>
+									{{ form.manufacturer.label }}
+									{{ form.manufacturer() }}
+								</div>
+								<div>
+									{{ form.model.label }}
+									{{ form.model() }}
+								</div>
+								<div>
+									{{ form.price.label }}
+									{{ form.price() }}
+								</div>
+								<div>
+									{{ form.year_of_make.label }}
+									{{ form.year_of_make() }}
+								</div>
+								<div>
+									{{ form.color.label }}
+									{{ form.color() }}
+								</div>
+								<div>
+									{{ form.gear_type.label }}
+									{{ form.gear_type() }}
+								</div>
+								<div>
+									{{ form.state_used.label }}
+									{{ form.state_used() }}
+								</div>
+								<div>
+									{{ form.registered.label }}
+									{{ form.registered() }}
+								</div>
+								<div>
+									{{ form.location.label }}
+									{{ form.location() }}
+								</div>
+								<div>
+									{{ form.car_type.label }}
+									{{ form.car_type() }}
+								</div>
+								<div>
+									{{ form.fuel.label }}
+									{{ form.fuel() }}
+								</div>
+								<div>
+									{{ form.warranty.label }}
+									{{ form.warranty() }}
+								</div>
+								<div>
+									{{ form.remark.label }}
+									{{ form.remark() }}
+								</div>
+								<div>
+									<small style="color: orange;" ><b>Kindly sellect all the images You wish to upload at once</b></small>
+									{{ form.further_images.label }}
+									{{ form.further_images }}
+									<small style="color: orange;" >You can upload up to 10 additional images.</small>
+								</div>
+								<div>
+									{{ form.submit() }}
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
 	 <!-- Main Content : premium ads section-->
 	<div class="container mt-5 mb-5">
 		<!-- Banner --> 
@@ -342,6 +572,10 @@
 
 	<!-- Main Content : vehicle listings -->
 
+
+	{%endblock body%}
+
+	{%block car_type%}
 	<div class="container mt-4">
 		<!-- Cars Section -->
 		<div class="row">
@@ -380,8 +614,8 @@
 			{% endfor %}
 		</div>
 	</div>
-
-	{%endblock body%}
+	{%endblock car_type%}
+	
 
 	<hr>
 	<hr>
@@ -390,7 +624,8 @@
 		<div class="container">
 		  <div class="row">
 			<div class="col-md-3">
-			  <img src="{{url_for('static', filename='images/kingstar_logo.jpg')}}" alt="AutoHub Logo" class="img-fluid mb-3" width="50%">
+				<a href="{{url_for('index')}}">
+			  <img src="{{url_for('static', filename='images/kingstar_logo.jpg')}}" alt="AutoHub Logo" class="img-fluid mb-3" width="50%"></a>
 			</div>
 			
 			<div class="col-md-3">
@@ -437,6 +672,7 @@
     <script src="{{ url_for('static', filename='vehicle_details.js') }}"></script>
 	<script src="{{ url_for('static', filename='vehicle_details.js') }}"></script>
 	<script src="{{ url_for('static', filename='image_modal.js') }}"></script>
+	<script src="{{ url_for('static', filename='blog.js') }}"></script>
 	
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="{{url_for('static', filename='custom.js')}}"></script>

@@ -1,0 +1,58 @@
+{% extends 'users/index.html' %}
+
+{% block slider%} 
+
+
+<!---->
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-md-6 bgimage  align-items-center d-flex justify-content-center" style=" color: red; background-image: url({{url_for('static', filename='images/lotsofcars.jpeg')}})">
+
+            <span style="font-size: 2rem; font-weight: bolder;">KINGSTARAUTOS</span>
+			  
+        </div>
+
+        <div class="col-md-5">
+            <div class="signin-form text-danger">
+                <h1>Add New Blog Post</h1>
+                <form method="POST" enctype="multipart/form-data" action="{{ url_for('add_blog') }}">
+                    {{ form.hidden_tag() }}
+                    <div class="form-group">
+                        {{ form.blog_image.label }}
+                        {{ form.blog_image(class="form-control-file") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.blog_title.label }}
+                        {{ form.blog_title(class="form-control") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.blog_body.label }}
+                        {{ form.blog_body(class="form-control", rows="5") }}
+                    </div>
+                    
+                    <!---->
+                    <div class="form-group">
+                        {{ form.blog_category.label }}
+                        {{ form.blog_category(class="form-control") }}
+                    </div>
+                    
+                    {{ form.submit(class="btn btn-warning") }}
+                    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-danger mt-1 form-control">Back to Dashboard</a>
+                </form>
+                
+            </div>
+        </div>
+
+       
+    </div>
+</div>
+
+{% endblock slider%}
+{% block categories %} {%endblock%}
+{% block ads%}  {% endblock ads%}
+{% block body%}  {% endblock body%}
+
+
+
+    

@@ -22,15 +22,18 @@
             <div class="carousel-inner">
                 {% set image_list = listing.further_images|from_json %}
                 {% for image in image_list %}
+
+                <!---->
                     <div class="carousel-item {% if loop.first %}active{% endif %}">
-                        <img src="{{ url_for('static', filename='uploads/' + image) }}" class="d-block image-clickable" alt="Vehicle image" data-bs-toggle="modal" data-bs-target="#imageModal" data-index="{{ loop.index0 }}">
+                        <img src="{{ url_for('static', filename='uploads/' + image) }}" class="d-block image-clickable" alt="Vehicle image" data-bs-toggle="modal" data-bs-target="#imageModal" data-index="{{ loop.index0 }}"> 
                     </div>
                 {% endfor %}
             </div>
             
             <div class="carousel-indicators">
                 {% for image in image_list %}
-                    <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="{{ loop.index0 }}" {% if loop.first %}class="active" aria-current="true"{% endif %} aria-label="Slide {{ loop.index }}"></button>
+                    <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="{{ loop.index0 }}" {% if loop.first %}class="active" aria-current="true"{% endif %} aria-label="Slide {{ loop.index }}"> </button>
+                    
                 {% endfor %}
             </div>
             

@@ -49,7 +49,7 @@
 }
 
 div{
-	border: 1px solid blue;
+	border: 0px solid blue;
 }
 
 @media (max-width: 991px) {
@@ -333,3 +333,32 @@ input, select {
     max-height: 80vh;
     max-width: 100%;
 }
+
+
+/* for the blog section*/
+#blog-body-tools {
+    margin-bottom: 10px;
+}
+
+#blog-body-tools button {
+    margin-right: 10px;
+}
+
+.subheading-container, .image-container {
+    margin-bottom: 15px;
+}
+
+.subheading-text, .image-caption {
+    margin-bottom: 5px;
+}
+
+.subheading-content {
+    width: 100%;
+}
+
+
+.blog-image {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+  }

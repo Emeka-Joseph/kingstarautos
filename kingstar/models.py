@@ -77,3 +77,68 @@ class Listings(db.Model):
 
     def __repr__(self):
         return f'<Listing {self.manufacturer} {self.model}>'
+
+
+
+class BusListings(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    image_filename = db.Column(db.String(200), nullable=False)
+    manufacturer = db.Column(db.String(100), nullable=False)
+    model = db.Column(db.String(100), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    year_of_make = db.Column(db.Integer, nullable=False)
+    color = db.Column(db.String(50), nullable=False)
+    gear_type = db.Column(db.String(50), nullable=False)
+    state_used = db.Column(db.String(100), nullable=False)
+    registered = db.Column(db.Boolean, nullable=False)
+    location = db.Column(db.String(100), nullable=False)
+    car_type = db.Column(db.String(100), nullable=False)
+    fuel = db.Column(db.String(50), nullable=False)
+    warranty = db.Column(db.Boolean, nullable=False)
+    remark = db.Column(db.Text, nullable=True)
+    date_of_post = db.Column(db.DateTime, default=datetime.utcnow)
+    further_images = db.Column(JSON, nullable=True)
+    #listing_userid = db.Column(db.Integer)
+    #listing_userid = db.Column(db.Integer, db.ForeignKey('user.id'))
+    listing_userid = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete='SET NULL'), nullable=True)
+
+    def __repr__(self):
+        return f'<Listing {self.manufacturer} {self.model}>'
+
+
+
+
+class TruckListings(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    image_filename = db.Column(db.String(200), nullable=False)
+    manufacturer = db.Column(db.String(100), nullable=False)
+    model = db.Column(db.String(100), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    year_of_make = db.Column(db.Integer, nullable=False)
+    color = db.Column(db.String(50), nullable=False)
+    gear_type = db.Column(db.String(50), nullable=False)
+    state_used = db.Column(db.String(100), nullable=False)
+    registered = db.Column(db.Boolean, nullable=False)
+    location = db.Column(db.String(100), nullable=False)
+    car_type = db.Column(db.String(100), nullable=False)
+    fuel = db.Column(db.String(50), nullable=False)
+    warranty = db.Column(db.Boolean, nullable=False)
+    remark = db.Column(db.Text, nullable=True)
+    date_of_post = db.Column(db.DateTime, default=datetime.utcnow)
+    further_images = db.Column(JSON, nullable=True)
+    #listing_userid = db.Column(db.Integer)
+    #listing_userid = db.Column(db.Integer, db.ForeignKey('user.id'))
+    listing_userid = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete='SET NULL'), nullable=True)
+
+ 
+
+class Blog(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    blog_image = db.Column(db.String(255), nullable=False)
+    blog_title = db.Column(db.String(255), nullable=False)
+    blog_body = db.Column(db.Text, nullable=False)
+    blog_category = db.Column(db.String(100), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f'<Blog {self.blog_title}>'
