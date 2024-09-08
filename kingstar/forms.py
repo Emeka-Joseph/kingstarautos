@@ -83,6 +83,27 @@ class TruckForm(FlaskForm):
 
 
 
+class PremiumForm(FlaskForm):
+    image = FileField('Image', validators=[FileRequired(), FileAllowed(['jpg', 'png', 'jpeg', 'gif'], 'Images only!')])
+    manufacturer = StringField('Manufacturer', validators=[DataRequired()])
+    model = StringField('Model', validators=[DataRequired()])
+    price = FloatField('Price', validators=[DataRequired()])
+    year_of_make = IntegerField('Year of Make', validators=[DataRequired()])
+    color = StringField('Color', validators=[DataRequired()])
+    gear_type = StringField('Gear Type', validators=[DataRequired()])
+    state_used = StringField('State Used', validators=[DataRequired()])
+    registered = BooleanField('Registered')
+    location = StringField('Location', validators=[DataRequired()])
+    car_type = StringField('Car Type', validators=[DataRequired()])
+    fuel = StringField('Fuel', validators=[DataRequired()])
+    warranty = BooleanField('Warranty')
+    remark = TextAreaField('Remark', validators=[Optional()])
+    image = FileField('Main Image', validators=[DataRequired()])
+    further_images = MultipleFileField('Additional Images (Max 10)', validators=[Optional()])
+    submit = SubmitField('Post Listing')
+
+
+
 class BlogForm(FlaskForm):
     blog_image = FileField('Blog Image', validators=[DataRequired()])
     blog_title = StringField('Blog Title', validators=[DataRequired()])

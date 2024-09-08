@@ -38,16 +38,29 @@ def generate_name():
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
+
 def premium_ad_to_dict(ad):
     return {
         'id': ad.id,
         'image_filename': ad.image_filename,
-        'price': float(ad.price),  # Convert Decimal to float
-        'year_of_prod': ad.year_of_prod,
+        'manufacturer': ad.manufacturer,
         'model': ad.model,
-        'town': ad.town,
-        'state': ad.state
+        'price': float(ad.price),  # Convert to float if needed
+        'year_of_make': ad.year_of_make,
+        'color': ad.color,
+        'gear_type': ad.gear_type,
+        'state_used': ad.state_used,
+        'registered': ad.registered,
+        'location': ad.location,
+        'car_type': ad.car_type,
+        'fuel': ad.fuel,
+        'warranty': ad.warranty,
+        'remark': ad.remark,
+        'date': ad.date.isoformat() if ad.date else None,  # Convert datetime to ISO format string
+        'further_images': ad.further_images,
+        'listing_userid': ad.listing_userid
     }
+
 
 def login_required(f):
     @wraps(f)
@@ -111,6 +124,18 @@ def truck():
                            listings=listings, form=form, deets = deets)
 
 
+@app.route('/get_premium_ads')
+def get_premium_ads():
+    ads = Premium_Ads.query.order_by(Premium_Ads.id.desc()).all()
+    return jsonify([{
+        'price': ad.price,
+        'year_of_prod': ad.year_of_make,
+        'model': ad.model,
+        'town': ad.location,
+        'manufacturer': ad.manufacturer,
+        'image_filename': ad.image_filename
+    } for ad in ads])
+
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -173,83 +198,6 @@ def signout():
     flash('You have been logged out.', 'info')
     return redirect(url_for('index'))
 
-@app.route('/upload', methods=['GET', 'POST'])
-def upload_vehicle():
-    if request.method == 'POST':
-        name = request.form['name']
-        price = float(request.form['price'])
-        image = request.files['image']
-        
-        if image and allowed_file(image.filename):
-            filename = secure_filename(image.filename)
-            upload_folder = os.path.join(app.root_path, 'static', 'uploads')
-            if not os.path.exists(upload_folder):
-                os.makedirs(upload_folder)
-            
-            image_path = os.path.join(upload_folder, filename)
-            try:
-                image.save(image_path)
-                print(f"Image saved to: {image_path}")  # Debug print
-            except Exception as e:
-                print(f"Error saving image: {e}")  # Debug print
-                return "Error saving image", 500
-            
-            new_vehicle = Vehicle(name=name, image_url=filename, price=price)
-            db.session.add(new_vehicle)
-            db.session.commit()
-            
-            return redirect(url_for('index'))
-        else:
-            return "Invalid file", 400
-    
-    return render_template('users/upload_vehicle.html')
-
-
-@app.route('/post_premium_ad', methods=['POST'])
-def post_premium_ad():
-    if request.method == 'POST':
-        try:
-            price = float(request.form['price'])
-            year_of_prod = int(request.form['year_of_prod'])
-            model = request.form['model']
-            town = request.form['town']
-            state = request.form['state']
-            image = request.files['image']
-
-            if image and allowed_file(image.filename):
-                filename = secure_filename(image.filename)
-                upload_folder = os.path.join(app.root_path, 'static', 'uploads')
-                
-                # Ensure the upload folder exists
-                if not os.path.exists(upload_folder):
-                    os.makedirs(upload_folder)
-                
-                image_path = os.path.join(upload_folder, filename)
-                
-                # Save the image
-                image.save(image_path)
-                
-                # Check if the file was actually saved
-                if not os.path.exists(image_path):
-                    raise Exception(f"Failed to save image at {image_path}")
-
-                print(f"Image saved successfully at: {image_path}")  # Debug print
-
-                new_ad = Premium_Ads(price=price, year_of_prod=year_of_prod, model=model,
-                                     town=town, state=state, image_filename=filename)
-                db.session.add(new_ad)
-                db.session.commit()
-
-                return jsonify({'success': True, 'message': 'Premium Ad posted successfully'})
-            else:
-                raise Exception("Invalid file type or no file provided")
-
-        except Exception as e:
-            print(f"Error posting Premium Ad: {str(e)}")  # Debug print
-            db.session.rollback()
-            return jsonify({'success': False, 'message': f'Error posting Premium Ad: {str(e)}'}), 400
-
-    return jsonify({'success': False, 'message': 'Invalid request method'}), 405
 
 
 @app.route('/cars', methods=['GET','POST'])
@@ -443,19 +391,6 @@ def truck_details(listing_id):
     cid = session.get('loggedin')
     deets = db.session.query(Users).filter(Users.user_id==cid).first()
     return render_template('users/truck_details.html', truckl=truckl, seller=seller, deets=deets)
-
-@app.route('/get_premium_ads')
-def get_premium_ads():
-    ads = Premium_Ads.query.order_by(Premium_Ads.id.desc()).all()
-    return jsonify([{
-        'price': ad.price,
-        'year_of_prod': ad.year_of_prod,
-        'model': ad.model,
-        'town': ad.town,
-        'state': ad.state,
-        'image_filename': ad.image_filename
-    } for ad in ads])
-
 
 
 @app.route('/blog')

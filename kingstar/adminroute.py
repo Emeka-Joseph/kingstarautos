@@ -3,7 +3,7 @@ from datetime import datetime
 
 from flask import render_template, redirect, flash, session, request, url_for,flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
-from .forms import SignupForm, SigninForm, ListingForm, BlogForm
+from .forms import SignupForm, SigninForm, ListingForm, BlogForm, PremiumForm
 from functools import wraps
 
 from kingstar.models import Users, Contact, Vehicle, Premium_Ads, Listings, Blog
@@ -38,16 +38,29 @@ def generate_name():
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
+
 def premium_ad_to_dict(ad):
     return {
         'id': ad.id,
         'image_filename': ad.image_filename,
-        'price': float(ad.price),  # Convert Decimal to float
-        'year_of_prod': ad.year_of_prod,
+        'manufacturer': ad.manufacturer,
         'model': ad.model,
-        'town': ad.town,
-        'state': ad.state
+        'price': float(ad.price),  # Convert to float if needed
+        'year_of_make': ad.year_of_make,
+        'color': ad.color,
+        'gear_type': ad.gear_type,
+        'state_used': ad.state_used,
+        'registered': ad.registered,
+        'location': ad.location,
+        'car_type': ad.car_type,
+        'fuel': ad.fuel,
+        'warranty': ad.warranty,
+        'remark': ad.remark,
+        'date': ad.date.isoformat() if ad.date else None,  # Convert datetime to ISO format string
+        'further_images': ad.further_images,
+        'listing_userid': ad.listing_userid
     }
+
 
 def login_required(f):
     @wraps(f)
@@ -110,6 +123,7 @@ def blogs():
     
 
 @app.route('/blog/add', methods=['GET', 'POST'])
+@admin_required
 def add_blog():
     form = BlogForm()
     if form.validate_on_submit():
@@ -141,3 +155,124 @@ def add_blog():
             for error in errors:
                 flash(f"Error in {getattr(form, field).label.text}: {error}", 'error')
     return render_template('admin/index.html', form=form)
+
+
+@app.route('/premium')
+def premium():
+    form = PremiumForm()
+    cid = session.get('admin_logged_in')
+    #deets = db.session.query(Users).filter(Users.user_id==cid).first()
+    #featured_vehicles = Vehicle.query.limit(7).all()  # Get 5 vehicles for the slider
+    #slide = db.session.query(Vehicle).all()
+    premium_ads = Premium_Ads.query.order_by(Premium_Ads.date.desc()).limit(15).all()
+    listings = Premium_Ads.query.order_by(Premium_Ads.date.desc()).limit(50).all()
+    
+    premium_ads_list = [premium_ad_to_dict(ad) for ad in premium_ads]
+    return render_template('admin/premium.html',
+                           premium_ads=premium_ads_list,  # Use the list of dicts
+                           listings=listings, form=form)
+
+
+@app.route('/premium_ads', methods=['GET', 'POST'])
+def premium_ads():
+    form = PremiumForm()
+    cid = session.get('admin_logged_in')
+    #deets = db.session.query(Users).filter(Users.user_id==cid).first()
+
+    #featured_vehicles = Vehicle.query.limit(7).all()  # Get 5 vehicles for the slider
+    #slide = db.session.query(Vehicle).all()
+    premium_ads = Premium_Ads.query.order_by(Premium_Ads.date.desc()).limit(15).all()
+    listings = Premium_Ads.query.order_by(Premium_Ads.date.desc()).limit(50).all()
+    
+    premium_ads_list = [premium_ad_to_dict(ad) for ad in premium_ads]
+    return render_template('admin/premium_ads.html',
+                           premium_ads=premium_ads_list,  # Use the list of dicts
+                           listings=listings, form=form)
+
+
+
+
+@app.route('/post/premium', methods=['GET', 'POST'])
+def post_premium():
+    id = session.get('admin_logged_in')
+    #deets = db.session.query(Users).filter(Users.user_id==id).first()
+    #mdeets = db.session.query(TruckListings).filter(TruckListings.listing_userid==id).first()
+    if id ==None:
+        flash('Please log in to post a listing.', 'warning')
+        return redirect(url_for('admin_login'))
+    form = PremiumForm()
+    if form.validate_on_submit():
+        main_image = form.image.data
+        main_image_filename = secure_filename(main_image.filename)
+        main_image.save(os.path.join(app.config['UPLOAD_FOLDER'], main_image_filename))
+        further_images = form.further_images.data
+        further_image_filenames = []
+        for image in further_images[:10]:  # Limit to 10 images
+            if image:
+                filename = secure_filename(image.filename)
+                image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                further_image_filenames.append(filename)
+
+        new_listing = Premium_Ads(
+            image_filename=main_image_filename,
+            further_images=json.dumps(further_image_filenames),  # Store as JSON string
+            manufacturer=form.manufacturer.data,
+            model=form.model.data,
+            price=form.price.data,
+            year_of_make=form.year_of_make.data,
+            color=form.color.data,
+            gear_type=form.gear_type.data,
+            state_used=form.state_used.data,
+            registered=form.registered.data,
+            location=form.location.data,
+            car_type=form.car_type.data,
+            fuel=form.fuel.data,
+            warranty=form.warranty.data,
+            remark=form.remark.data,
+            listing_userid=id
+        )
+        db.session.add(new_listing)
+        db.session.commit()
+        flash('Your premium listing has been posted successfully!', 'success')
+    return redirect(url_for('premium'))
+        
+
+@app.route('/premium/<int:premium_id>')
+def premium_details(premium_id):
+    prem = Premium_Ads.query.get_or_404(premium_id)
+    #seller = Users.query.get(busl.listing_userid)
+    cid = session.get('loggedin')
+    #deets = db.session.query(Users).filter(Users.user_id==cid).first()
+    return render_template('admin/premium_details.html', prem=prem)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload_vehicle():
+    if request.method == 'POST':
+        name = request.form['name']
+        image = request.files['image']
+        if image and allowed_file(image.filename):
+            filename = secure_filename(image.filename)
+            upload_folder = os.path.join(app.root_path, 'static', 'uploads')
+            if not os.path.exists(upload_folder):
+                os.makedirs(upload_folder)
+            
+            image_path = os.path.join(upload_folder, filename)
+            try:
+                image.save(image_path)
+                print(f"Image saved to: {image_path}")  # Debug print
+            except Exception as e:
+                print(f"Error saving image: {e}")  # Debug print
+                return "Error saving image", 500
+            
+            new_vehicle = Vehicle(name=name, image_url=filename)
+            db.session.add(new_vehicle)
+            db.session.commit()
+            return redirect(url_for('index'))
+        else:
+            return "Invalid file", 400
+    
+    return render_template('admin/upload_vehicle.html')
+
+
+

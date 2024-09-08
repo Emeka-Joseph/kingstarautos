@@ -1,0 +1,103 @@
+{% extends 'users/index.html' %}
+
+
+
+<div class="container mt-4">
+    <div class="row">
+
+        {% block categories %} 
+         <!-- Premium Ads Section -->
+			
+		 
+        {{super()}}
+        
+        {%endblock%}
+    {% block slider%} 
+    <div class="col-md-6">
+        <h4 style="color: red; font-weight: bolder; "> {{prem.year_of_make}}  {{prem.manufacturer}}  {{prem.model}} </h4>
+
+    
+        <i class="fas fa-calendar-alt mb-5">    {{prem.date_of_post}} </i>
+        <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                {% set image_list = prem.further_images|from_json %}
+                {% for image in image_list %}
+                    <div class="carousel-item {% if loop.first %}active{% endif %}">
+                        <img src="{{ url_for('static', filename='uploads/' + image) }}" class="d-block image-clickable" alt="Vehicle image" data-bs-toggle="modal" data-bs-target="#imageModal" data-index="{{ loop.index0 }}">
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <div class="carousel-indicators">
+                {% for image in image_list %}
+                    <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="{{ loop.index0 }}" {% if loop.first %}class="active" aria-current="true"{% endif %} aria-label="Slide {{ loop.index }}"></button>
+                {% endfor %}
+            </div>
+            
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <img src="" class="img-fluid" id="modalImage" alt="Large vehicle image">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="prevButton">Previous</button>
+                        <button type="button" class="btn btn-secondary" id="nextButton">Next</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Vehihcle Description</h5>
+                </div>
+                <div class="card-body">
+                    <span><b>{{ prem.description }}</b></span><br>
+                    <span>Make: <b>{{ prem.manufacturer }}</b></span><br>
+                    <span>Model: <b>{{ prem.model }}</b></span><br>
+                    <span>Price: <b>{{ "{:,.2f}".format(prem.price) }}</b></span><br>
+                    <span>Color: <b>{{ prem.color }}</b></span><br>
+                    <span>Gear Type: <b>{{ prem.gear_type }}</b></span><br>
+                    <span>Vehicle State: <b>{{ prem.state_used }}</b> km</span><br>
+                    <span>Registered: <b>{{ prem.registered }}</b></span><br>
+                    <span>Remark: <b>{{ prem.remark }}</b></span><br>
+                    <span>Location: <b>{{ prem.location }}</b></span><br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- For the seller's information-->
+        
+    <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Contact Seller </h5>
+                </div>
+                <div class="card-body">
+                    <p>Name: <b>Kingstar Sales Team</b> </p>
+                    <p>Email: kingstar.autos@gmail.com</p>
+                    <p>Phone: <b>+234(0) 704 048 0257</b> </p> <br>
+                    <a href="mailto:lambdah.softwares@gmail.com" class=" btn-primary">Click to mail Seller</a> <br>
+                    <a href="https://wa.me/2347040480257?text=Hello,%20you%20are%20weclome%20to%20kingstarautos%20your%20best%20online%20vehicle%20vendor.%20what%20can%20I%20do%20for%20you" target="_blank"> <i class="fa-fa-whatsapp"></i> Chat on --whatsapp</a>
+                </div>
+            </div>
+             
+    </div>
+   
+    </div>
+
+ </div>
+{% endblock slider%}
+
+{% block ads%}  {% endblock ads%}
+{% block body%}  {% endblock body%}
+
+

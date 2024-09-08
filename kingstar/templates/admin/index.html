@@ -30,24 +30,43 @@
     <div class="container dashboard-container text-center">
         <h1 class="text-center mb-4">Admin Dashboard</h1>
         
+        {% with messages = get_flashed_messages(with_categories=true) %}
+    	{% if messages %}
+        	{% for category, message in messages %}
+				<div class="alert alert-{{ category }}">
+					{{ message }}
+				</div>
+        	{% endfor %}
+    	{% endif %}
+	    {% endwith %}
         <div class="row mb-4">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <button id="contactBtn" class="btn btn-primary btn-lg btn-block btn-dashboard">Users Details</button>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <button id="donationBtn" class="btn btn-dark btn-lg btn-block btn-dashboard">Other Details</button>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <button id="postedBlogs" class="btn btn-dark btn-lg btn-block btn-dashboard">Posted Blogs</button>
             </div>
 
-            <div class="col-md-3  ">
+            <div class="col-md-2">
                 <a href="{{url_for('blogs')}}" class="btn btn-primary btn-lg btn-block btn-dashboard">Post A Blog</a>
             </div>
 
+            <div class="col-md-2">
+                <button id="postslideBtn" class="btn btn-dark btn-lg btn-block btn-dashboard">Posted Slides</button>
+            </div>
+
+            <div class="col-md-2">
+                <a href="{{url_for('upload_vehicle')}}" class="btn btn-primary btn-lg btn-block btn-dashboard">Post For Slide</a>
+            </div>
 
 
+            <div class="col-md-2">
+                <a href="{{url_for('premium_ads')}}" class="btn btn-primary btn-lg btn-block btn-dashboard">Post Premium Ads</a>
+            </div>
            
         </div>
 
@@ -137,6 +156,29 @@
             </table>
         </div>
 
+
+        <div id="postslide" class="data-table">
+            <h2>List of Slides</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>S/N</th>
+                        <th>Name</th>
+                        <th>Picture</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for slide in deets %}
+                    <tr>
+                        <th>{{loop.index}}</th>
+                        <td>{{ slide.name }}</td>
+                        <td>{{ slide.image_url }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
        
         <div class="row mb-4">
             <div class="col-md-12 mt-5">
@@ -167,6 +209,12 @@
             $('#postedBlogs').click(function() {
                 $('.data-table').hide();
                 $('#allblogs').show();
+            });
+
+
+            $('#postslideBtn').click(function() {
+                $('.data-table').hide();
+                $('#postslide').show();
             });
 
            

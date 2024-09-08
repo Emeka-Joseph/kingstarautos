@@ -1,0 +1,49 @@
+{% extends 'users/index.html' %}
+
+{% block slider%} 
+
+
+<!---->
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-md-6 bgimage  align-items-center d-flex justify-content-center" style=" color: red; background-image: url({{url_for('static', filename='images/lotsofcars.jpeg')}})">
+
+            <span style="font-size: 2rem; font-weight: bolder;">KINGSTARAUTOS</span>
+			  
+        </div>
+
+        <div class="col-md-5">
+            <div class="signin-form text-danger">
+                <h1>Add New Blog Post</h1>
+
+        <form action="{{ url_for('upload_vehicle') }}" method="POST" enctype="multipart/form-data">
+            <div class="form-group text-danger">
+                <label for="name">Vehicle Name</label>
+                <input type="text" class="form text-danger" id="name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="image">Vehicle Image</label>
+                <input type="file" class="form-file" id="image" name="image" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn btn-warning form-control">Upload Vehicle</button>
+        </form>
+
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-danger mt-1 form-control">Back to Dashboard</a>
+        
+            </div>
+        </div>
+
+       
+    </div>
+</div>
+
+{% endblock slider%}
+{% block categories %} {%endblock%}
+{% block ads%}  {% endblock ads%}
+{% block body%}  {% endblock body%}
+
+
+
+    

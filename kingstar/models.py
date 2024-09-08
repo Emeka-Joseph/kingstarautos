@@ -35,10 +35,9 @@ class Vehicle(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     image_url = db.Column(db.String(200), nullable=False)
-    price = db.Column(db.Float, nullable=False)
     
 
-class Premium_Ads(db.Model):
+class Premium_Adds(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     price = db.Column(db.Float, nullable=False)
     year_of_prod = db.Column(db.Integer, nullable=False)
@@ -50,6 +49,31 @@ class Premium_Ads(db.Model):
 
     def __repr__(self):
         return f'<Premium_Ad {self.model}>'
+
+
+
+
+class Premium_Ads(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    image_filename = db.Column(db.String(200), nullable=False)
+    manufacturer = db.Column(db.String(100), nullable=False)
+    model = db.Column(db.String(100), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    year_of_make = db.Column(db.Integer, nullable=False)
+    color = db.Column(db.String(50), nullable=False)
+    gear_type = db.Column(db.String(50), nullable=False)
+    state_used = db.Column(db.String(100), nullable=False)
+    registered = db.Column(db.Boolean, nullable=False)
+    location = db.Column(db.String(100), nullable=False)
+    car_type = db.Column(db.String(100), nullable=False)
+    fuel = db.Column(db.String(50), nullable=False)
+    warranty = db.Column(db.Boolean, nullable=False)
+    remark = db.Column(db.Text, nullable=True)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+    further_images = db.Column(JSON, nullable=True)
+    #listing_userid = db.Column(db.Integer)
+    #listing_userid = db.Column(db.Integer, db.ForeignKey('user.id'))
+    listing_userid = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete='SET NULL'), nullable=True)
 
 
 
