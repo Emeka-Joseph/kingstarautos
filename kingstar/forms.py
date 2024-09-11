@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, Optional
-from wtforms import StringField, FloatField, IntegerField, BooleanField, TextAreaField, FileField, SubmitField, MultipleFileField
+from wtforms import StringField, FloatField, IntegerField, BooleanField, TextAreaField, FileField, SubmitField, MultipleFileField, EmailField
 from flask_wtf.file import FileRequired, FileAllowed
 
 
@@ -39,7 +39,6 @@ class ListingForm(FlaskForm):
     image = FileField('Main Image', validators=[DataRequired()])
     further_images = MultipleFileField('Additional Images (Max 10)', validators=[Optional()])
     submit = SubmitField('Post Listing')
-
 
 
 class BusForm(FlaskForm):
@@ -110,3 +109,13 @@ class BlogForm(FlaskForm):
     blog_body = TextAreaField('Blog Content', validators=[DataRequired()])
     blog_category = StringField('Blog Category', validators=[DataRequired()])
     submit = SubmitField('Post Blog')
+
+
+class MessageForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    email = EmailField('Email', validators=[DataRequired(), Email()])
+    phone = StringField('Phone Number', validators=[DataRequired()])
+    message = TextAreaField('Message', validators=[DataRequired()])
+    submit = SubmitField('SEND MESSAGE')
+
+    

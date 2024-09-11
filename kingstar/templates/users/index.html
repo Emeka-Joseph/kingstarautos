@@ -6,13 +6,17 @@
     <title>kingstarautos</title>
     <link rel="stylesheet" href="{{url_for('static',filename='bootstrap/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+	<link rel="stylesheet" href="{{url_for('static', filename='css2/style.css')}}">
+	<link rel="stylesheet" href="{{url_for('static', filename='style/mystyle.css')}}">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link rel="stylesheet" href="https://fontawesome.com/icons/square-whatsapp?f=brands&s=solid">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 
-	<!--whatsapp API -->
-	<a href="https://wa.me/2347040480257" target="_blank">+234(0) 704 048 0257</a>
 
 
 	<style>
@@ -44,17 +48,27 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{url_for('index')}}"><i class="fas fa-home"></i> Home</a>
                     </li>
+					<li>
+						<div class="btn-group">
+							<button type="button" class="btn btn-secondary dropdown-toggle bg-dark" data-bs-toggle="dropdown" aria-expanded="false">
+							  Services
+							</button>
+							<ul class="dropdown-menu dropdown-menu-end bg-dark" style="color: white;">
+								<li class="nav-item">
+									<a class="nav-link" href="#">Car Swap</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="#">Car Rentals</a>
+								</li>
+							</ul>
+						  </div>
+					</li>
+                    
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Car Swap</a>
+                        <a class="nav-link" href="{{url_for('about')}}">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Car Rentals</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contact Us</a>
+                        <a class="nav-link" href="#conta">Contact Us</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{url_for('blog')}}">Blog</a>
@@ -87,30 +101,21 @@
 	
 	<!-- search chamber -->
 	  <div class="container-fluid mt-4">
-		<div class="row g-2 text-center align-items-center">
+		<div class="row g-2 text-center align-items-center" style="justify-content: center;">
 		  <div class="col-md-3 text-center">
 			<a href="{{url_for('index')}}" class="text-danger text-decoration-none d-none d-lg-block">
 			  <span style="font-size: 1.5rem; font-weight: bolder;">KINGSTARAUTOS</span>
 			  <img src="{{url_for('static', filename='images/kingstar_logo.JPG')}}" alt="Logo" width="30%">
 			</a>
 		  </div>
-		  <div class="col-md-3">
-			<input type="text" class="form-control" placeholder="ie: Toyota Camry">
-		  </div>
-		  <div class="col-md-3">
-			<select class="form-select">
-			  <option selected>Select a category</option>
-			  <!-- Add categories here -->
-			</select>
-		  </div>
-		  <div class="col-md-1">
-			<button class="btn btn-dark form-control ">Search</button> 
-		  </div>
+		  
+		  
 		  <div class="col-md-1">
 			
 			{% if session.get('loggedin') %}
-			 <button  class="btn btn-warning form-control" data-bs-toggle="modal" data-bs-target="#categoryofcar">
-				<i class="fas fa-plus"></i> Post Ads
+			 
+			<button class="btn btn-warning form-control" id="postAdsBtn">
+				<i class="fas fa-plus"></i> Post Vehicle
 			</button>
 			{% endif %}
 
@@ -157,7 +162,7 @@
 			{%block slider%}
 
             <!-- Car Slider -->
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <div id="carSlider" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
                         {% for vehicle in featured_vehicles %}
@@ -181,19 +186,7 @@
 
 			{%block ads%}
             
-			<!--
-				<div class="col-md-3">
-                <div class="card">
-                    <div class="card-header bg-danger text-white">
-                        <i class="fas fa-ad"></i> Sponsored ad
-                    </div>
-                    <div class="card-body">
-                        
-                    </div>
-                </div>
-            </div>
-			-->
-
+			
 			{%endblock ads%}
         </div>
     </div>
@@ -215,7 +208,7 @@
 		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		</div>
 		<div class="modal-body">
-		  ...
+		  <span>Kindly select the right category</span>
 		</div>
 		<div class="modal-footer text-center align-items-center">
 		  
@@ -629,6 +622,59 @@
 	<hr>
 	<hr>
 
+	{% block contact %}
+	<div class="feturedsection" id="conta">
+			<h1 class="text-center"><span class="bdots">&bullet;</span>C o n t a c t - U s  ||</h1>
+		</div>
+
+<section class="contact_section mt-1" id="contact">
+  <div class="container-fluid">
+	<div class="row" style="background-color: #000000">
+	  
+	  <div class="col-md-6 col-lg-4 " >
+		{% with c=get_flashed_messages() %}
+		  {% if c %}
+			{% for msg in c %}
+			  <div class="alert alert-info col-md-12">{{ msg }}</div>
+			{% endfor %}
+		  {% endif %}
+		{% endwith %}
+
+		
+		<form method="post" action="{{url_for('messages')}}" style="padding: 10px;">
+			{{ msg_form.hidden_tag() }}
+			<div>
+				{{ msg_form.name(placeholder="Name") }}
+			</div>
+			<div>
+				{{ msg_form.email(placeholder="Email") }}
+			</div>
+			<div>
+				{{ msg_form.phone(placeholder="Phone Number") }}
+			</div>
+			<div>
+				{{ msg_form.message(placeholder="Message", class="message-box") }}
+			</div>
+			<div class="d-flex justify-content-center mt-1">
+				{{ msg_form.submit }}
+			</div>
+		</form>
+	  </div>
+
+	  <div class="col-md-6 col-lg-8 px-0 d-flex justify-content-center mt-2" style="padding: 10px;">
+		
+
+		  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.4632915041475!2d7.525292773992358!3d6.462839723867374!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1044a53f16530f85%3A0xd034293332cb8674!2sKingstar%20Autos!5e0!3m2!1sen!2sng!4v1725991012956!5m2!1sen!2sng" width="600" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" target="_blank"></iframe>
+		  <br>
+	  </div>
+	</div>
+  </div>
+</section>
+{% endblock contact %}
+
+<hr>
+<hr>
+
 	<footer class=" pt-4 pb-2">
 		<div class="container">
 		  <div class="row">
@@ -657,8 +703,8 @@
 			<div class="col-md-3">
 			  <h5 class="text-success">My account</h5>
 			  <ul class="list-unstyled">
-				<li><a href="#" class="text-success"><i class="fas fa-lock"></i> Login</a></li>
-				<li><a href="#" class="text-success"><i class="fas fa-user-plus"></i> Register</a></li>
+				<li><a href="{{ url_for('signin') }}" class="text-success"><i class="fas fa-lock"></i> Login</a></li>
+				<li><a href="{{url_for('signup')}}" class="text-success"><i class="fas fa-user-plus"></i> Register</a></li>
 			  </ul>
 			</div>
 		  </div>
@@ -686,37 +732,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="{{url_for('static', filename='custom.js')}}"></script>
 	<script src="{{url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 	
 	<script>
-/*		$(document).ready(function() {
-    $('#postPremiumAdForm').on('submit', function(e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-        
-        $.ajax({
-url: '/post_premium_ad',
-type: 'POST',
-data: formData,
-success: function(response) {
-    if (response.success) {
-        alert('Premium Ad posted successfully!');
-        $('#postPremiumAdModal').modal('hide');
-        location.reload();
-    } else {
-        alert('Error: ' + response.message);
-    }
-},
-error: function(jqXHR, textStatus, errorThrown) {
-    console.error('AJAX Error:', textStatus, errorThrown);
-    alert('Error posting Premium Ad. Please check the console and try again.');
-},
-cache: false,
-contentType: false,
-processData: false,
-});
-    });
-});
-*/
 
 document.addEventListener('DOMContentLoaded', function() {
 const slider = document.querySelector('.premium-ads-slider');
@@ -809,6 +828,45 @@ window.addEventListener('resize', () => {
 });
 
 
+
+document.addEventListener('DOMContentLoaded', function() {
+    const postAdsBtn = document.getElementById('postAdsBtn');
+    const categoryModal = new bootstrap.Modal(document.getElementById('categoryofcar'));
+    const postListingModal = new bootstrap.Modal(document.getElementById('postListingModal'));
+    const postBusModal = new bootstrap.Modal(document.getElementById('postbusModal'));
+    const postTruckModal = new bootstrap.Modal(document.getElementById('postTruckModal'));
+
+    postAdsBtn.addEventListener('click', function() {
+        categoryModal.show();
+    });
+
+    document.querySelectorAll('[data-bs-toggle="modal"]').forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+            event.preventDefault();
+            const targetModalId = this.getAttribute('data-bs-target');
+            const targetModal = bootstrap.Modal.getInstance(document.querySelector(targetModalId));
+            
+            // Hide the current modal before showing the new one
+            categoryModal.hide();
+            
+            // Show the target modal
+            if (targetModal) {
+                targetModal.show();
+            }
+        });
+    });
+
+    // Ensure all modals are properly hidden when closed
+    [categoryModal, postListingModal, postBusModal, postTruckModal].forEach(function(modal) {
+        modal._element.addEventListener('hidden.bs.modal', function() {
+            document.body.classList.remove('modal-open');
+            const modalBackdrop = document.querySelector('.modal-backdrop');
+            if (modalBackdrop) {
+                modalBackdrop.remove();
+            }
+        });
+    });
+});
 	</script>
 	
 	

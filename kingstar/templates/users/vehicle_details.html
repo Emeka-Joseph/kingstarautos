@@ -9,11 +9,33 @@
          <!-- Premium Ads Section -->
 			
 		 
-        {{super()}}
+        <div class="col-md-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Vehihcle Description</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><b>{{ listing.description }}</b></p>
+                        <p>Make: <b>{{ listing.manufacturer }}</b></p>
+                        <p>Model: <b>{{ listing.model }}</b></p>
+                        <p>Price: <b>{{ "{:,.2f}".format(listing.price) }}</b></p>
+                        <p>Color: <b>{{ listing.color }}</b></p>
+                        <p>Gear Type: <b>{{ listing.gear_type }}</b></p>
+                        <p>Vehicle State: <b>{{ listing.state_used }}</b> km</p>
+                        <p>Registered: <b>{{ listing.registered }}</b></p>
+                        <p>Condition: <b>{{ listing.remark }}</b></p>
+                        <p>Location: <b>{{ listing.location }}</b></p>
+                    </div>
+                </div>
+            </div>
+        </div>
         
         {%endblock%}
+
+        {%block car_type%}  {%endblock%}
     {% block slider%} 
-    <div class="col-md-6">
+    <div class="col-md-6" style="border: 1px dotted grey;">
         <h4 style="color: red; font-weight: bolder; "> {{listing.year_of_make}}  {{listing.manufacturer}}  {{listing.model}} </h4>
 
     
@@ -47,34 +69,16 @@
                         <img src="" class="img-fluid" id="modalImage" alt="Large vehicle image">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="prevButton">Previous</button>
-                        <button type="button" class="btn btn-secondary" id="nextButton">Next</button>
-                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-dark" id="prevButton">Previous</button>
+                        <button type="button" class="btn btn-warning" id="nextButton">Next</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
 
 
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">Vehihcle Description</h5>
-                </div>
-                <div class="card-body">
-                    <span><b>{{ listing.description }}</b></span><br>
-                    <span>Make: <b>{{ listing.manufacturer }}</b></span><br>
-                    <span>Model: <b>{{ listing.model }}</b></span><br>
-                    <span>Price: <b>{{ "{:,.2f}".format(listing.price) }}</b></span><br>
-                    <span>Color: <b>{{ listing.color }}</b></span><br>
-                    <span>Gear Type: <b>{{ listing.gear_type }}</b></span><br>
-                    <span>Vehicle State: <b>{{ listing.state_used }}</b> km</span><br>
-                    <span>Registered: <b>{{ listing.registered }}</b></span><br>
-                    <span>Condition: <b>{{ listing.remark }}</b></span><br>
-                    <span>Location: <b>{{ listing.location }}</b></span><br>
-                </div>
-            </div>
-        </div>
+        
     </div>
 
     <!-- For the seller's information-->
@@ -86,8 +90,9 @@
                 </div>
                 <div class="card-body">
                     <p>Name: {{ seller.user_fname }} {{ seller.user_lname }}</p>
-                    <p>Email: {{ seller.user_email }}</p>
-                    <p>Phone: {{ seller.user_phone }}</p>
+                    <p><i class="fa-solid fa-envelope text-danger"> </i>  {{ seller.user_email }}</p>
+                    <p><i class="fa-solid fa-mobile-retro text-danger"></i>  {{ seller.user_phone }}</p>
+                    <a href="https://wa.me/{{seller.user_phone}}?text=Hello,%20you%20are%20weclome%20to%20kingstarautos%20your%20best%20online%20vehicle%20vendor.%20what%20can%20I%20do%20for%20you" target="_blank" style="text-decoration: none;"> <i class="fa-brands fa-square-whatsapp fa-beat" style="color: #63E6BE;"></i> Chat on whatsapp</a>
                 </div>
             </div>
              

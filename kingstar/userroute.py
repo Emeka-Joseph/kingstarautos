@@ -3,10 +3,10 @@ from datetime import datetime
 
 from flask import render_template, redirect, flash, session, request, url_for,flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
-from .forms import SignupForm, SigninForm, ListingForm, BlogForm, BusForm, TruckForm
+from .forms import SignupForm, SigninForm, ListingForm, BlogForm, BusForm, TruckForm,MessageForm
 from functools import wraps
 
-from kingstar.models import Users, Contact, Vehicle, Premium_Ads, Listings, Blog, BusListings, TruckListings
+from kingstar.models import Users, Contact, Vehicle, Premium_Ads, Listings, Blog, BusListings, TruckListings, Contact
 from kingstar import app, db
 from werkzeug.utils import secure_filename
 from flask import jsonify
@@ -74,6 +74,7 @@ def login_required(f):
 @app.route('/')
 def index():
     form = ListingForm()
+    msg_form = MessageForm()
     cid = session.get('loggedin')
     deets = db.session.query(Users).filter(Users.user_id==cid).first()
     featured_vehicles = Vehicle.query.limit(7).all()  # Get 5 vehicles for the slider
@@ -85,12 +86,13 @@ def index():
                            featured_vehicles=featured_vehicles, 
                            slide=slide, 
                            premium_ads=premium_ads_list,  # Use the list of dicts
-                           listings=listings, form=form, deets = deets)
+                           listings=listings, form=form, deets = deets, msg_form=msg_form)
 
 
 @app.route('/buses')
 def bus():
     form = BusForm()
+    msg_form = MessageForm()
     cid = session.get('loggedin')
     deets = db.session.query(Users).filter(Users.user_id==cid).first()
     featured_vehicles = Vehicle.query.limit(7).all()  # Get 5 vehicles for the slider
@@ -103,12 +105,13 @@ def bus():
                            featured_vehicles=featured_vehicles, 
                            slide=slide, 
                            premium_ads=premium_ads_list,  # Use the list of dicts
-                           listings=listings, form=form, deets = deets)
+                           listings=listings, form=form, deets = deets,msg_form=msg_form)
 
 
 @app.route('/trucks')
 def truck():
     form = TruckForm()
+    msg_form = MessageForm()
     cid = session.get('loggedin')
     deets = db.session.query(Users).filter(Users.user_id==cid).first()
     featured_vehicles = Vehicle.query.limit(7).all()  # Get 5 vehicles for the slider
@@ -121,7 +124,7 @@ def truck():
                            featured_vehicles=featured_vehicles, 
                            slide=slide, 
                            premium_ads=premium_ads_list,  # Use the list of dicts
-                           listings=listings, form=form, deets = deets)
+                           listings=listings, form=form, deets = deets, msg_form=msg_form)
 
 
 @app.route('/get_premium_ads')
@@ -140,6 +143,7 @@ def get_premium_ads():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignupForm()
+    msg_form = MessageForm()
     premium_ads = Premium_Ads.query.order_by(Premium_Ads.date.desc()).limit(15).all()
     premium_ads_list = [premium_ad_to_dict(ad) for ad in premium_ads]
     if form.validate_on_submit():
@@ -161,13 +165,14 @@ def signup():
             db.session.rollback()
             flash('An error occurred. Please try again.', 'error')
 
-    return render_template('users/signup.html', form=form, premium_ads=premium_ads_list)
+    return render_template('users/signup.html', form=form, premium_ads=premium_ads_list, msg_form=msg_form)
 
 @app.route('/signin', methods = (["GET", "POST"]), strict_slashes = False)
 def signin():
     form = SigninForm()
+    msg_form = MessageForm()
     if request.method=='GET':
-        return render_template('users/signin.html', title="Login", form=form)
+        return render_template('users/signin.html', title="Login", form=form, msg_form=msg_form)
     else:
         if form.validate_on_submit:
             email = form.email.data
@@ -207,7 +212,44 @@ def cars():
     return render_template('users/cars.html', premium_ads=premium_ads_list)
     
 
+@app.route('/about', methods=['GET','POST'])
+def about():
+    premium_ads = Premium_Ads.query.order_by(Premium_Ads.date.desc()).limit(15).all()
+    premium_ads_list = [premium_ad_to_dict(ad) for ad in premium_ads]
+    return render_template('users/about.html', premium_ads=premium_ads_list)
 
+
+
+@app.route('/messages', methods=['GET', 'POST'])
+def messages():
+    msg_form = MessageForm()
+    form = ListingForm()
+    if msg_form.validate_on_submit():
+        # Validate the form inputs
+        mail=msg_form.email.data
+        name=msg_form.name.data
+        phone=msg_form.phone.data
+        content=msg_form.message.data
+        # Create a new Contact object
+        new_contact = Contact(
+            contact_email=mail,
+            contact_name=name,
+            contact_phone=phone,
+            contact_content=content
+        )
+        
+        try:
+            # Add the new contact to the database
+            db.session.add(new_contact)
+            db.session.commit()
+            flash('Your message has been sent successfully!', 'success')
+            return redirect(url_for('index'))
+        except Exception as e:
+            db.session.rollback()
+            flash('An error occurred while sending your message. Please try again.', 'error')
+            app.logger.error(f'Database error: {str(e)}')
+        return render_template('users/index.html', msg_form=msg_form, form=form)
+    
 @app.route('/post_listing', methods=['GET', 'POST'])
 def post_listing():
     id = session.get('loggedin')
@@ -218,6 +260,7 @@ def post_listing():
         return redirect(url_for('signin'))
 
     form = ListingForm()
+    msg_form = MessageForm()
     if form.validate_on_submit():
         main_image = form.image.data
         main_image_filename = secure_filename(main_image.filename)
@@ -256,7 +299,7 @@ def post_listing():
         flash('Your listing has been posted successfully!', 'success')
         #return redirect(url_for('listings'))  # Redirect to a page showing all listings
 
-    return render_template('users/index.html', form=form,deets=deets, mdeets=mdeets)
+    return render_template('users/index.html', form=form,deets=deets, mdeets=mdeets, msg_form=msg_form)
 
 
 

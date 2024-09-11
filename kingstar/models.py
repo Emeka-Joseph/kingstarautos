@@ -26,9 +26,9 @@ class Admin(db.Model):
 class Contact(db.Model):
     contact_id = db.Column(db.Integer, autoincrement=True,primary_key=True)
     contact_email = db.Column(db.String(100),nullable=False)
-    contact_name =db.Column(db.String(255),nullable=True)
-    contact_subject = db.Column(db.String(80),nullable=True)
-    contact_content = db.Column(db.String(255), nullable=True)
+    contact_name =db.Column(db.String(255),nullable=False)
+    contact_phone = db.Column(db.Integer,nullable=False)
+    contact_content = db.Column(db.String(255), nullable=False)
 
 
 class Vehicle(db.Model):

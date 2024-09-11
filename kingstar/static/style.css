@@ -49,7 +49,7 @@
 }
 
 div{
-	border: 1px solid blue;
+	border: 0px solid blue;
 }
 
 @media (max-width: 991px) {

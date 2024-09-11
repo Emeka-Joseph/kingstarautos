@@ -7,13 +7,33 @@
 
         {% block categories %} 
          <!-- Premium Ads Section -->
-			
+			<div class="col-md-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Vehihcle Description</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><b>{{ truckl.description }}</b></p>
+                            <p>Make: <b>{{ truckl.manufacturer }}</b></p>
+                            <p>Model: <b>{{ truckl.model }}</b></p>
+                            <p>Price: <b>{{ "{:,.2f}".format(truckl.price) }}</b></p>
+                            <p>Color: <b>{{ truckl.color }}</b></p>
+                            <p>Gear Type: <b>{{ truckl.gear_type }}</b></p>
+                            <p>Vehicle State: <b>{{ truckl.state_used }}</b> km</p>
+                            <p>Registered: <b>{{ truckl.registered }}</b></p>
+                            <p>Condition: <b>{{ truckl.remark }}</b></p>
+                            <p>Location: <b>{{ truckl.location }}</b></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 		 
-        {{super()}}
-        
         {%endblock%}
+
+        {%block car_type%} {%endblock%}
     {% block slider%} 
-    <div class="col-md-6">
+    <div class="col-md-6" style="border: 1px dotted grey;">
         <h4 style="color: red; font-weight: bolder; "> {{truckl.year_of_make}}  {{truckl.manufacturer}}  {{truckl.model}} </h4>
 
     
@@ -53,25 +73,7 @@
         </div>
 
 
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">Vehihcle Description</h5>
-                </div>
-                <div class="card-body">
-                    <span><b>{{ truckl.description }}</b></span><br>
-                    <span>Make: <b>{{ truckl.manufacturer }}</b></span><br>
-                    <span>Model: <b>{{ truckl.model }}</b></span><br>
-                    <span>Price: <b>{{ "{:,.2f}".format(truckl.price) }}</b></span><br>
-                    <span>Color: <b>{{ truckl.color }}</b></span><br>
-                    <span>Gear Type: <b>{{ truckl.gear_type }}</b></span><br>
-                    <span>Vehicle State: <b>{{ truckl.state_used }}</b> km</span><br>
-                    <span>Registered: <b>{{ truckl.registered }}</b></span><br>
-                    <span>Condition: <b>{{ truckl.remark }}</b></span><br>
-                    <span>Location: <b>{{ truckl.location }}</b></span><br>
-                </div>
-            </div>
-        </div>
+        
     </div>
 
     <!-- For the seller's information-->
@@ -83,8 +85,9 @@
                 </div>
                 <div class="card-body">
                     <p>Name: {{ seller.user_fname }} {{ seller.user_lname }}</p>
-                    <p>Email: {{ seller.user_email }}</p>
-                    <p>Phone: {{ seller.user_phone }}</p>
+                    <p><i class="fa-solid fa-envelope text-danger"> </i>  {{ seller.user_email }}</p>
+                    <p><i class="fa-solid fa-mobile-retro text-danger"></i> : {{ seller.user_phone }}</p>
+                    <a href="https://wa.me/{{seller.user_phone}}?text=Hello,%20you%20are%20weclome%20to%20kingstarautos%20your%20best%20online%20vehicle%20vendor.%20what%20can%20I%20do%20for%20you" target="_blank" style="text-decoration: none;"> <i class="fa-brands fa-square-whatsapp fa-beat" style="color: #63E6BE;"></i> Chat on whatsapp</a>
                 </div>
             </div>
              

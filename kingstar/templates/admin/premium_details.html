@@ -3,21 +3,41 @@
 
 
 <div class="container mt-4">
-    <div class="row">
+    <div class="row align-items-center">
 
         {% block categories %} 
          <!-- Premium Ads Section -->
 			
-		 
-        {{super()}}
+	<div class="col-md-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Vehihcle Description</h5>
+                </div>
+                <div class="card-body">
+                    <p><b>{{ prem.description }}</b></p>
+                    <p>Make: <b>{{ prem.manufacturer }}</b></p>
+                    <p>Model: <b>{{ prem.model }}</b></p>
+                    <p>Price: <b>{{ "{:,.2f}".format(prem.price) }}</b></p>
+                    <p>Color: <b>{{ prem.color }}</b></p>
+                    <p>Gear Type: <b>{{ prem.gear_type }}</b></p>
+                    <p>Vehicle State: <b>{{ prem.state_used }}</b> km</p>
+                    <p>Registered: <b>{{ prem.registered }}</b></p>
+                    <p>Remark: <b>{{ prem.remark }}</b></p>
+                    <p>Location: <b>{{ prem.location }}</b></p>
+                </div>
+            </div>
+        </div>
+    </div>
         
         {%endblock%}
+        {%block car_type%}    {%endblock car_type%}
     {% block slider%} 
-    <div class="col-md-6">
+    <div class="col-md-6 text-center mb-4" style="border: 1px dotted grey;">
         <h4 style="color: red; font-weight: bolder; "> {{prem.year_of_make}}  {{prem.manufacturer}}  {{prem.model}} </h4>
 
     
-        <i class="fas fa-calendar-alt mb-5">    {{prem.date_of_post}} </i>
+        <i class="fas fa-calendar-alt mb-5">    {{prem.date}} </i>
         <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 {% set image_list = prem.further_images|from_json %}
@@ -44,31 +64,11 @@
                         <img src="" class="img-fluid" id="modalImage" alt="Large vehicle image">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="prevButton">Previous</button>
-                        <button type="button" class="btn btn-secondary" id="nextButton">Next</button>
-                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-dark" id="prevButton">Previous</button>
+                        <button type="button" class="btn btn-warning" id="nextButton">Next</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        
                     </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">Vehihcle Description</h5>
-                </div>
-                <div class="card-body">
-                    <span><b>{{ prem.description }}</b></span><br>
-                    <span>Make: <b>{{ prem.manufacturer }}</b></span><br>
-                    <span>Model: <b>{{ prem.model }}</b></span><br>
-                    <span>Price: <b>{{ "{:,.2f}".format(prem.price) }}</b></span><br>
-                    <span>Color: <b>{{ prem.color }}</b></span><br>
-                    <span>Gear Type: <b>{{ prem.gear_type }}</b></span><br>
-                    <span>Vehicle State: <b>{{ prem.state_used }}</b> km</span><br>
-                    <span>Registered: <b>{{ prem.registered }}</b></span><br>
-                    <span>Remark: <b>{{ prem.remark }}</b></span><br>
-                    <span>Location: <b>{{ prem.location }}</b></span><br>
                 </div>
             </div>
         </div>
@@ -81,12 +81,14 @@
                 <div class="card-header">
                     <h5 class="card-title">Contact Seller </h5>
                 </div>
-                <div class="card-body">
+                <div class="card-body" >
                     <p>Name: <b>Kingstar Sales Team</b> </p>
-                    <p>Email: kingstar.autos@gmail.com</p>
-                    <p>Phone: <b>+234(0) 704 048 0257</b> </p> <br>
-                    <a href="mailto:lambdah.softwares@gmail.com" class=" btn-primary">Click to mail Seller</a> <br>
-                    <a href="https://wa.me/2347040480257?text=Hello,%20you%20are%20weclome%20to%20kingstarautos%20your%20best%20online%20vehicle%20vendor.%20what%20can%20I%20do%20for%20you" target="_blank"> <i class="fa-fa-whatsapp"></i> Chat on --whatsapp</a>
+                    <p><i class="fa-solid fa-envelope text-danger"> </i>  kingstar.autos@gmail.com</p>
+                    <p><i class="fa-solid fa-mobile-retro text-danger"></i>  <b>+234(0) 704 048 0257</b> </p>
+                    
+                    <a href="https://wa.me/2347040480257?text=Hello,%20you%20are%20weclome%20to%20kingstarautos%20your%20best%20online%20vehicle%20vendor.%20what%20can%20I%20do%20for%20you" target="_blank" style="text-decoration: none;"> <i class="fa-brands fa-square-whatsapp fa-beat" style="color: #63E6BE;"></i> Chat on whatsapp</a>
+
+                    
                 </div>
             </div>
              

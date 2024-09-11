@@ -1,0 +1,91 @@
+{% extends 'users/index.html' %}
+
+
+
+{% block slider%} 
+
+<div class="feturedsection" id="about_us">
+	<h1 class="text-center"><span class="bdots">&bullet;</span>A b o u t - U s  || <span class="carstxt"></span>&bullet;</h1>
+</div>
+	<div class="row my-5">
+	<div class="col-md-12">
+			<div class="newslettercontent">
+				<div class="leftside">
+					<img src=" {{url_for('static',filename='images/border.png')}}" alt="border">
+					<h1><strong>KingstarAutos</strong></h1>
+					<p style="color:black; text-align: center;">Kingstar Autos is a rising auto-based company in Nigeria aimed at being the best
+						sales point for vehicles of different brands. We aim to achieve this goal by consistently maintainig trust, quality and affordability in terms of pricing. <br>
+							<br>
+						
+						</p>
+				</div>
+				<div class="rightside">
+					<img class="newsimage" src=" {{url_for('static',filename='images/lexus2rx350.jpg')}}" alt="newsletter">
+					<button> <span > <strong>KINGSTARAUTOS </strong> </span> </button>
+				</div>
+			</div>
+  </div>
+	</div>
+
+    <div class="row my-5">
+        <div class="col-md-4">
+            <div class="content-box">
+              <h2 class="title" >Our Vision</h2>
+              <div class="img-box">
+                <img src="{{url_for('static',filename='images/vision.png')}}" width="15%" alt="" />
+              </div>
+              <div class="detail-box content-box bg-red d-flex justify-content-center">
+                <h4 style="font-family: 'Exo 2', sans-serif; color: white"> 
+                    Kingstarautos has been established as an upcoming leading automotive dealer group and is to become the benchmark for financial performance and customer satisfaction.
+                </h4>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="content-box">
+              <h2 class="title">Our Core Values</h2>
+              <div class="img-box">
+                <img src="{{url_for('static',filename='images/values2.png')}}"  width="15%" style="padding: 10px;" alt="" />
+              </div>
+              <div class="detail-box content-box bg-red">
+                <h5 style="font-family: 'Exo 2', sans-serif;">   
+                    Making customers' dreams come true by providing a joyful car-buying experience with relelntless innovation
+                </h5>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="content-box">
+              <h2 class="title">Our Mission</h2>
+              <div class="img-box">
+                <img src="{{url_for('static',filename='images/mission3.png')}}" width="14%" alt="" />
+              </div>
+              <div class="detail-box content-box bg-red">
+                <h5 style="font-family: 'Exo 2', sans-serif;"> 
+                    Making dreams come true by providing customers with an unparalleled sales and after-sales overall experience.
+                </h5>
+              </div>
+            </div>
+          </div>
+    </div>
+
+{% endblock slider%}
+
+
+{% block ads%}  {% endblock ads%}
+{% block body%}  {% endblock body%}
+{%block car_type%}  
+
+
+{% endblock car_type%}
+
+{% block categories %} 
+         <!-- Premium Ads Section -->	 
+   
+{%endblock%}
+
+
+
+    
