@@ -3,7 +3,7 @@ from datetime import datetime
 
 from flask import render_template, redirect, flash, session, request, url_for,flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
-from .forms import SignupForm, SigninForm, ListingForm, BlogForm, PremiumForm
+from .forms import SignupForm, SigninForm, ListingForm, BlogForm, PremiumForm, MessageForm
 from functools import wraps
 
 from kingstar.models import Users, Contact, Vehicle, Premium_Ads, Listings, Blog
@@ -110,8 +110,10 @@ def admin_logout():
     return redirect(url_for('admin_login'))
 
 
+
 @app.route('/blogs')
 def blogs():
+     msg_form = MessageForm()
      if 'admin_logged_in' not in session:
         return redirect(url_for('admin_login'))
      else:
@@ -119,13 +121,14 @@ def blogs():
         blog_posts = Blog.query.all()
         cid = session.get('loggedin')
         deets = db.session.query(Users).filter(Users.user_id==cid).first()
-        return render_template('admin/add_blog.html', blog_posts=blog_posts, form=form, deets=deets)
+        return render_template('admin/add_blog.html', blog_posts=blog_posts, form=form, deets=deets, msg_form=msg_form)
     
 
 @app.route('/blog/add', methods=['GET', 'POST'])
 @admin_required
 def add_blog():
     form = BlogForm()
+    msg_form = MessageForm()
     if form.validate_on_submit():
         try:
             # Handle file upload
@@ -154,15 +157,16 @@ def add_blog():
         for field, errors in form.errors.items():
             for error in errors:
                 flash(f"Error in {getattr(form, field).label.text}: {error}", 'error')
-    return render_template('admin/index.html', form=form)
+    return render_template('admin/index.html', form=form, msg_form=msg_form)
 
 
 @app.route('/premium')
 def premium():
     form = PremiumForm()
+    msg_form = MessageForm()
     cid = session.get('admin_logged_in')
     #deets = db.session.query(Users).filter(Users.user_id==cid).first()
-    #featured_vehicles = Vehicle.query.limit(7).all()  # Get 5 vehicles for the slider
+    deets = Vehicle.query.limit(7).all()  # Get 5 vehicles for the slider
     #slide = db.session.query(Vehicle).all()
     premium_ads = Premium_Ads.query.order_by(Premium_Ads.date.desc()).limit(15).all()
     listings = Premium_Ads.query.order_by(Premium_Ads.date.desc()).limit(50).all()
@@ -170,14 +174,15 @@ def premium():
     premium_ads_list = [premium_ad_to_dict(ad) for ad in premium_ads]
     return render_template('admin/premium.html',
                            premium_ads=premium_ads_list,  # Use the list of dicts
-                           listings=listings, form=form)
+                           listings=listings, form=form, msg_form=msg_form, deets=deets)
 
 
 @app.route('/premium_ads', methods=['GET', 'POST'])
 def premium_ads():
     form = PremiumForm()
+    msg_form = MessageForm()
     cid = session.get('admin_logged_in')
-    #deets = db.session.query(Users).filter(Users.user_id==cid).first()
+    deets = db.session.query(Users).all()
 
     #featured_vehicles = Vehicle.query.limit(7).all()  # Get 5 vehicles for the slider
     #slide = db.session.query(Vehicle).all()
@@ -187,7 +192,7 @@ def premium_ads():
     premium_ads_list = [premium_ad_to_dict(ad) for ad in premium_ads]
     return render_template('admin/premium_ads.html',
                            premium_ads=premium_ads_list,  # Use the list of dicts
-                           listings=listings, form=form)
+                           listings=listings, form=form,deets=deets, msg_form=msg_form)
 
 
 
@@ -239,15 +244,20 @@ def post_premium():
 
 @app.route('/premium/<int:premium_id>')
 def premium_details(premium_id):
+    msg_form = MessageForm()
     prem = Premium_Ads.query.get_or_404(premium_id)
-    #seller = Users.query.get(busl.listing_userid)
+    #deets = Users.query.get(busl.listing_userid)
     cid = session.get('loggedin')
-    #deets = db.session.query(Users).filter(Users.user_id==cid).first()
-    return render_template('admin/premium_details.html', prem=prem)
+    deets = db.session.query(Users).filter(Users.user_id==cid).first()
+    return render_template('admin/premium_details.html', prem=prem, deets=deets, msg_form=msg_form)
 
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_vehicle():
+    msg_form = MessageForm()
+    
+    deets = db.session.query(Users).all()
+
     if request.method == 'POST':
         name = request.form['name']
         image = request.files['image']
@@ -272,7 +282,7 @@ def upload_vehicle():
         else:
             return "Invalid file", 400
     
-    return render_template('admin/upload_vehicle.html')
+    return render_template('admin/upload_vehicle.html', deets=deets, msg_form=msg_form)
 
 
 

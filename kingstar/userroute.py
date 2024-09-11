@@ -207,16 +207,20 @@ def signout():
 
 @app.route('/cars', methods=['GET','POST'])
 def cars():
+    msg_form = MessageForm()
     premium_ads = Premium_Ads.query.order_by(Premium_Ads.date.desc()).limit(15).all()
     premium_ads_list = [premium_ad_to_dict(ad) for ad in premium_ads]
-    return render_template('users/cars.html', premium_ads=premium_ads_list)
+    return render_template('users/cars.html', premium_ads=premium_ads_list, msg_form=msg_form)
     
 
 @app.route('/about', methods=['GET','POST'])
 def about():
+    msg_form = MessageForm()
+    cid = session.get('loggedin')
     premium_ads = Premium_Ads.query.order_by(Premium_Ads.date.desc()).limit(15).all()
+    deets = db.session.query(Users).filter(Users.user_id==cid).first()
     premium_ads_list = [premium_ad_to_dict(ad) for ad in premium_ads]
-    return render_template('users/about.html', premium_ads=premium_ads_list)
+    return render_template('users/about.html', premium_ads=premium_ads_list, deets=deets, msg_form=msg_form)
 
 
 
@@ -411,60 +415,69 @@ def from_json(value):
 
 @app.route('/vehicle/<int:listing_id>')
 def vehicle_details(listing_id):
+    msg_form = MessageForm()
     listing = Listings.query.get_or_404(listing_id)
     seller = Users.query.get(listing.listing_userid)
     cid = session.get('loggedin')
     deets = db.session.query(Users).filter(Users.user_id==cid).first()
-    return render_template('users/vehicle_details.html', listing=listing, seller=seller, deets=deets)
+    return render_template('users/vehicle_details.html', listing=listing, seller=seller, deets=deets, msg_form=msg_form)
 
 
 @app.route('/bus/<int:listing_id>')
 def bus_details(listing_id):
+    msg_form = MessageForm()
     busl = BusListings.query.get_or_404(listing_id)
     seller = Users.query.get(busl.listing_userid)
     cid = session.get('loggedin')
     deets = db.session.query(Users).filter(Users.user_id==cid).first()
-    return render_template('users/bus_details.html', busl=busl, seller=seller, deets=deets)
+    return render_template('users/bus_details.html', busl=busl, seller=seller, deets=deets, msg_form=msg_form)
 
 
 @app.route('/trucks/<int:listing_id>')
 def truck_details(listing_id):
+    msg_form = MessageForm()
     truckl = TruckListings.query.get_or_404(listing_id)
     seller = Users.query.get(truckl.listing_userid)
     cid = session.get('loggedin')
     deets = db.session.query(Users).filter(Users.user_id==cid).first()
-    return render_template('users/truck_details.html', truckl=truckl, seller=seller, deets=deets)
+    return render_template('users/truck_details.html', truckl=truckl, seller=seller, deets=deets, msg_form=msg_form)
 
 
 @app.route('/blog')
 def blog():
+    msg_form = MessageForm()
     all_blogs = db.session.query(Blog).order_by(Blog.created_at.desc()).all()
     blogs = Blog.query.order_by(Blog.created_at.desc()).all()
     cid = session.get('loggedin')
     deets = db.session.query(Users).filter(Users.user_id==cid).first()
-    return render_template('users/blog.html', blogs=blogs, all_blogs=all_blogs, deets=deets)
+    return render_template('users/blog.html', blogs=blogs, all_blogs=all_blogs, deets=deets, msg_form=msg_form)
 
 
 
 @app.route('/blog/<int:blog_id>')
 def blog_detail(blog_id):
+    msg_form = MessageForm()
     blog = Blog.query.get_or_404(blog_id)
-    return render_template('users/blog_detail.html', blog=blog)
+    cid = session.get('loggedin')
+    deets = db.session.query(Users).filter(Users.user_id==cid).first()
+    return render_template('users/blog_detail.html', blog=blog, msg_form=msg_form, deets=deets)
 
 
 @app.errorhandler(404)
 def pagenotfound(error):
+        msg_form = MessageForm()
         if session.get('loggedin') ==None:
             flash('Please kindly re-check the route and make sure all spellings are correct','warning')
             return render_template('users/error404.html', error=error),404
         else:
             cid = session['loggedin']
-            alluser = db.session.query(Users).filter(Users.user_id==cid).first()
-            return render_template('users/error404.html',alluser=alluser, error=error),404
+            deets = db.session.query(Users).filter(Users.user_id==cid).first()
+            return render_template('users/error404.html',deets=deets, error=error, msg_form=msg_form),404
 
 
 @app.errorhandler(500)
 def internalerror(error):
+    msg_form = MessageForm()
     if session.get('loggedin') ==None:
         flash('Please kindly re-check the route and make sure all spellings are correct','warning')
         return render_template('users/error404.html', error=error),500
@@ -472,12 +485,13 @@ def internalerror(error):
         cid = session['loggedin']
         alluser = db.session.query(Users).filter(Users.user_id==cid).first()
         ''' For you to see this in action, ensure the debug mode is set to False'''
-        return render_template('users/error500.html',alluser=alluser, error=error),500
+        return render_template('users/error500.html',alluser=alluser, error=error, msg_form=msg_form),500
 
 
 @app.errorhandler(505)
 def internalerror(error):
+    msg_form = MessageForm()
     cid = session['loggedin']
     alluser = db.session.query(Users).filter(Users.user_id==cid).first()
     ''' For you to see this in action, ensure the debug mode is set to False'''
-    return render_template('users/error500.html',alluser=alluser, error=error),505
+    return render_template('users/error500.html',alluser=alluser, error=error, msg_form=msg_form),505
