@@ -1290,7 +1290,7 @@ padding-left: 0px;
   font-family: "OpenSans Bold";
   src: url(../source/fonts/OpenSans-Bold.ttf) format("truetype");
 }
-.leftside>h1{
+.leftside>h4{
 	font-family: "OpenSans Bold";
 	top:39%;
 	left: 13.2%;
@@ -1300,13 +1300,15 @@ padding-left: 0px;
 	z-index: 100;
 	margin: 0px;
 }
+
+
 .leftside>p{
 	position: absolute;
 	font-family: "OpenSans Regular";
 	top:47.5%;
 	left: 13.2%;
 	font-size: 20px;
-	z-index: 100;
+	z-index: -100;
 	width: 35%;
 }
 .rightside{
@@ -1612,8 +1614,6 @@ left: 0%;
   }
  }
  
-
-
 
 @font-face{
 	font-family: "Roboto Light";

@@ -249,7 +249,11 @@ def premium_details(premium_id):
     #deets = Users.query.get(busl.listing_userid)
     cid = session.get('loggedin')
     deets = db.session.query(Users).filter(Users.user_id==cid).first()
-    return render_template('admin/premium_details.html', prem=prem, deets=deets, msg_form=msg_form)
+    premium_ads = Premium_Ads.query.order_by(Premium_Ads.date.desc()).limit(15).all()
+    listings = Premium_Ads.query.order_by(Premium_Ads.date.desc()).limit(50).all()
+    
+    premium_ads_list = [premium_ad_to_dict(ad) for ad in premium_ads]
+    return render_template('admin/premium_details.html', prem=prem, deets=deets, msg_form=msg_form,listings=listings, premium_ads=premium_ads_list)
 
 
 @app.route('/upload', methods=['GET', 'POST'])

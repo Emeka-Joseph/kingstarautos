@@ -362,3 +362,8 @@ input, select {
     max-width: 500px;
     height: auto;
   }
+
+
+  footer a{
+    text-decoration: none;
+  }

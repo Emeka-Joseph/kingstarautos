@@ -31,6 +31,74 @@
 			transition: opacity 0.5s ease;
 		}
 
+		.premium-ads-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.premium-ads-slider {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.ad-item {
+    flex: 0 0 auto;
+    width: 100%; /* This will be overridden for larger screens */
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.ad-image {
+    width: 100%;
+    height: 200px; /* Fixed height */
+    object-fit: cover; /* This will maintain aspect ratio while covering the area */
+    object-position: center; /* Center the image within its container */
+}
+
+/* Responsive adjustments */
+@media (min-width: 576px) {
+    .ad-item {
+        width: 50%;
+    }
+}
+
+@media (min-width: 768px) {
+    .ad-item {
+        width: 33.333%;
+    }
+}
+
+@media (min-width: 992px) {
+    .ad-item {
+        width: 25%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .ad-item {
+        width: 20%;
+    }
+}
+
+.prev-btn, .next-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.prev-btn {
+    left: 10px;
+}
+
+.next-btn {
+    right: 10px;
+}
 		
 	</style>
 </head>
@@ -55,10 +123,10 @@
 							</button>
 							<ul class="dropdown-menu dropdown-menu-end bg-dark" style="color: white;">
 								<li class="nav-item">
-									<a class="nav-link" href="#">Car Swap</a>
+									<a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><li class="list-group-item">Car Swap</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" href="#">Car Rentals</a>
+									<a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><li class="list-group-item">Car Rentals</a>
 								</li>
 							</ul>
 						  </div>
@@ -150,10 +218,30 @@
                     <a href="{{url_for('index')}}"><li class="list-group-item tex"><i class="fas fa-car"></i> Cars</li></a>
                     <a href="{{url_for('bus')}}"><li class="list-group-item"><i class="fas fa-bus"></i> Buses</li></a>
                     <a href="{{url_for('truck')}}"><li class="list-group-item"><i class="fas fa-truck"></i> Trucks </li></a>
-					<a href=""><li class="list-group-item"><i class="fas fa-cogs"></i> Trailers</li></a>
-                    <a href=""><li class="list-group-item"><i class="fas fa-cogs"></i> Spare parts & Accessories</li></a>
-					<a href=""><li class="list-group-item"><i class="fas fa-cogs"></i> Spare Swap</li></a>
-					<a href=""><li class="list-group-item"><i class="fas fa-cogs"></i> Car Rentals</li></a>
+					
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><li class="list-group-item"><li class="list-group-item"><i class="fas fa-cogs"></i> Spare parts & Accessories</li></a>
+					
+					<a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><li class="list-group-item"><li class="list-group-item"><i class="fas fa-cogs"></i> Spare Swap</li></a>
+					
+					<a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><li class="list-group-item"><i class="fas fa-cogs"></i> Car Rentals</li></a>			
+					
+					<!-- Modal -->
+					<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+							<h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+							    <h5>Service Coming Soon</h5>
+							</div>
+							<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+							
+						</div>
+						</div>
+					</div>
                 </ul>
             </div>           
 
@@ -545,30 +633,37 @@
 				<h3 class="text-danger mb-0">
 					<i class="fas fa-star"></i> PREMIUM ADS
 				</h3>
-				<a href="#" class="text-success">SEE ALL ADS</a>
+				<a href="{{ url_for('premium') }}" class="text-success">View Premium</a>
 			</div>
 
-
 			
-
-			<a href="{{ url_for('premium') }}">
 				<div class="premium-ads-container">
+
+					<button class="prev-btn">&lt;</button>
+					<button class="next-btn">&gt;</button>
+
+					<a href="{{ url_for('premium') }}" style="text-decoration: none;">
 					<div class="premium-ads-slider">
 						<!-- Ads will be dynamically inserted here -->
 					</div>
-					<button class="prev-btn">&lt;</button>
-					<button class="next-btn">&gt;</button>
+					</a>
+					
 				</div>
 				
 				<template id="ad-template" >
 					<div class="ad-item text-center" >
-						<img src="" alt="Car Image">
+						
+						<img src="" alt="Car Image" class="ad-image">
+						
 						<span class="price text-danger" style="font-weight: bolder;"></span><br>
-						<span class="model" style="font-weight: bolder;"></span><br>
-						<i class="fas fa-map-marker-alt text-danger"></i> <span class="location" ></span>
+						
+						<span class="model text-dark" style="font-weight: bolder;"></span><br>
+						<i class="fas fa-map-marker-alt text-danger"></i> 
+						<span class="location text-dark" ></span>
 					</div>
 				</template>
-			</a>
+				
+			
 		</div> 
 	</div>
 
@@ -585,7 +680,6 @@
 				<h3 class="text-success mb-0">
 					<i class="fas fa-car"></i> CARS
 				</h3>
-				<a href="#" class="text-success">SEE ALL ADS</a>
 			</div>
 		</div>
 	
@@ -615,6 +709,11 @@
 			</div>
 			{% endfor %}
 		</div>
+
+		<!--Bus Listings-->
+
+		
+
 	</div>
 	{%endblock car_type%}
 	
@@ -685,27 +784,48 @@
 			</div>
 			
 			<div class="col-md-3">
-			  <h5 class="text-success">Quick Links</h5>
+			  <h5 class="text-danger" style="font-weight: bolder;">Quick Links</h5>
 			  <ul class="list-unstyled">
-				<li><a href="#" class="text-success">Privacy Policy</a></li>
-				<li><a href="#" class="text-success">Terms of use</a></li>
-				<li><a href="#" class="text-success">Billing Policy</a></li>
-				<li><a href="#" class="text-success">About Us</a></li>
+				<li><a href="#" class="text-dark">Privacy Policy</a></li>
+				<li><a href="#" class="text-dark">Terms of use</a></li>
+				<li><a href="#" class="text-dark">Billing Policy</a></li>
+				<li><a href="{{url_for('about')}}" class="text-dark">About Us</a></li>
 			  </ul>
 			</div>
 			<div class="col-md-3">
-			  <h5 class="text-success">Social Network</h5>
+			  <h5 class="text-danger" style="font-weight: bolder;">Social Network</h5>
 			  <ul class="list-unstyled">
-				<li><a href="#" class="btn btn-primary btn-sm me-1 "><i class="fab fa-facebook-f"></i> Facebook</a> &nbsp;</li>
-				<li><a href="#" class="btn btn-info btn-sm me-1 my-1"><i class="fab fa-twitter"></i> Twitter</a></li>
-				<li><a href="#" class="btn btn-danger btn-sm"><i class="fab fa-instagram"></i> Instagram</a></li>
+				<li><a href="https://web.facebook.com/KINGSTARAUTOS/?_rdc=1&_rdr" class="btn btn-primary btn-sm me-1 " target="_blank"><i class="fab fa-facebook-f"></i> </a>&nbsp;Facebook </li>
+				<li><a href="" class="btn btn-info btn-sm me-1 my-1"><i class="fab fa-twitter"></i> </a> X</li>
+				<li><a href="https://www.instagram.com/kingstarautos/" class="btn btn-danger btn-sm mb-1 " target="_blank"><i class="fab fa-instagram"></i> </a>&nbsp;Instagram</li>
+
+				<li><a href="https://www.tiktok.com/tag/kingstarautos?lang=my-MM" class="btn btn-warning btn-sm" target="_blank"><i class="fab fa-tiktok"></i> </a> &nbsp;Tiktok</li>
 			  </ul>
 			</div>
 			<div class="col-md-3">
-			  <h5 class="text-success">My account</h5>
+			  <h5 class="text-danger" style="font-weight: bolder; color: red;">My account</h5>
 			  <ul class="list-unstyled">
-				<li><a href="{{ url_for('signin') }}" class="text-success"><i class="fas fa-lock"></i> Login</a></li>
-				<li><a href="{{url_for('signup')}}" class="text-success"><i class="fas fa-user-plus"></i> Register</a></li>
+				{% if not session.get('loggedin') %}
+					<div class="navbar-nav mx-5">
+						<a class="nav-item nav-link" href="{{ url_for('signin') }}">
+							<i class="fas fa-sign-in-alt"></i> Login
+						</a>
+						<a class="nav-item nav-link" href="{{url_for('signup')}}"><i class="fas fa-user-plus"></i> Register</a>
+					</div>
+				{% else %}
+					<div class="navbar-nav mx-5">
+
+						
+						<a class="nav-item nav-link text-danger" href="{{ url_for('signout') }}">
+							<i class="fas fa-sign-out-alt"></i> Logout
+						</a>
+						
+					</div>
+					<span style="color: white;">Welcome | {{deets.user_lname}} </span><br> <br>
+					<div>
+
+					</div>
+				{% endif %}
 			  </ul>
 			</div>
 		  </div>
@@ -713,7 +833,7 @@
 		<div class="bg-dark text-white py-2 mt-4 text-center">
 		  <div class="container">
 			<div class="row text-center">
-			  <div class="col-md-12 ">
+			  <div class="col-md-6 ">
 				<small>Copyright 2023. All right reserved | kingstarautos.com</small>
 			  </div>
 			</div>
@@ -755,6 +875,8 @@ function updateVisibleAds() {
     else visibleAds = 1;
 }
 
+
+
 // Fetch premium ads from your backend
 
 
@@ -773,9 +895,9 @@ fetch('/get_premium_ads')
 
         adElement.querySelector('.price').textContent = `₦${ad.price.toLocaleString()}`;
 
-        adElement.querySelector('.model').textContent = `${ad.year_of_make} ${ad.model}`;
+        adElement.querySelector('.model').textContent = `${ad.year_of_prod} ${ad.model}`;
 		
-        adElement.querySelector('.location').textContent = `${ad.town}, ${ad.state}`;
+        adElement.querySelector('.location').textContent = `${ad.town}`;
         slider.appendChild(adElement);
     });
     updateVisibleAds();

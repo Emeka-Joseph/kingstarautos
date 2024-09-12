@@ -118,4 +118,5 @@ class MessageForm(FlaskForm):
     message = TextAreaField('Message', validators=[DataRequired()])
     submit = SubmitField('SEND MESSAGE')
 
+
     

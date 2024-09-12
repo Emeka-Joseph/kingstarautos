@@ -4,73 +4,122 @@
 
 {% block slider%} 
 
-<div class="feturedsection" id="about_us">
+<div class="feturedsection" id="about_us" style="background-image: url();">
 	<h1 class="text-center"><span class="bdots">&bullet;</span>A b o u t - U s  || <span class="carstxt"></span>&bullet;</h1>
 </div>
+
+
+
 	<div class="row my-5">
-	<div class="col-md-12">
-			<div class="newslettercontent">
-				<div class="leftside">
-					<img src=" {{url_for('static',filename='images/border.png')}}" alt="border">
-					<h1><strong>KingstarAutos</strong></h1>
-					<p style="color:black; text-align: center;">Kingstar Autos is a rising auto-based company in Nigeria aimed at being the best
-						sales point for vehicles of different brands. We aim to achieve this goal by consistently maintainig trust, quality and affordability in terms of pricing. <br>
-							<br>
-						
-						</p>
-				</div>
-				<div class="rightside">
-					<img class="newsimage" src=" {{url_for('static',filename='images/lexus2rx350.jpg')}}" alt="newsletter">
-					<button> <span > <strong>KINGSTARAUTOS </strong> </span> </button>
-				</div>
-			</div>
-  </div>
+    <div class="col-md-12 sm">
+        <div class="newslettercontent">
+          <div class="leftside">
+            <img src=" {{url_for('static',filename='images/border.png')}}" alt="border">
+            
+            <p style="color:rgb(255, 0, 0); text-align: center; font-size: 1.3rem;"> In the world of automotive solutions, we don't just adapt to change – we drive it. <br>
+                <br>
+              
+              </p>
+          </div>
+          <div class="rightside">
+            <img class="newsimage" src=" {{url_for('static',filename='images/lexus2rx350.jpg')}}" alt="newsletter">
+            <button class="form-control text-sm" ><span style="font-size: 17px; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; "><b>Kingstarautos</b></span></button>
+          </div>
+        </div>
+    </div>
 	</div>
 
-    <div class="row my-5">
-        <div class="col-md-4">
-            <div class="content-box">
-              <h2 class="title" >Our Vision</h2>
-              <div class="img-box">
-                <img src="{{url_for('static',filename='images/vision.png')}}" width="15%" alt="" />
-              </div>
-              <div class="detail-box content-box bg-red d-flex justify-content-center">
-                <h4 style="font-family: 'Exo 2', sans-serif; color: white"> 
-                    Kingstarautos has been established as an upcoming leading automotive dealer group and is to become the benchmark for financial performance and customer satisfaction.
-                </h4>
-              </div>
-            </div>
-          </div>
+  <!--the card for about us-->
+<div class="row " style="display: flex; justify-content: center;">
+  <div class="col-md-5 d-flex text-center" style="border-radius: 20%;">
+    <div class="card" >
+      <img src="{{url_for('static', filename='images/kingstar_logo.JPG')}}" class="card-img-top" alt="kingstar logo">
+      <div class="card-body" style="background-color: rgb(0, 0, 0); border-radius: 20%;">
+        <p class="card-text p-3" style="font-weight: bolder; color: rgb(255, 254, 253);">KingStar Autos is revolutionizing the automotive industry with an innovative platform that integrates vehicle sales, rentals, and swaps. Our mission is to empower consumers with flexible, technology-driven solutions that adapt to their lifestyles and budgets. We prioritize customer satisfaction, innovation, integrity, and sustainability, ensuring that every interaction with KingStar Autos meets the highest standards of quality and ethical practice.
 
-          <div class="col-md-4">
-            <div class="content-box">
-              <h2 class="title">Our Core Values</h2>
-              <div class="img-box">
-                <img src="{{url_for('static',filename='images/values2.png')}}"  width="15%" style="padding: 10px;" alt="" />
-              </div>
-              <div class="detail-box content-box bg-red">
-                <h5 style="font-family: 'Exo 2', sans-serif;">   
-                    Making customers' dreams come true by providing a joyful car-buying experience with relelntless innovation
-                </h5>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <div class="content-box">
-              <h2 class="title">Our Mission</h2>
-              <div class="img-box">
-                <img src="{{url_for('static',filename='images/mission3.png')}}" width="14%" alt="" />
-              </div>
-              <div class="detail-box content-box bg-red">
-                <h5 style="font-family: 'Exo 2', sans-serif;"> 
-                    Making dreams come true by providing customers with an unparalleled sales and after-sales overall experience.
-                </h5>
-              </div>
-            </div>
-          </div>
+          As pioneers in the field, we're not just transacting vehicles; we're transforming the entire automotive experience. Our commitment extends beyond business to community engagement and environmental responsibility. At KingStar Autos, we anticipate and meet your evolving automotive needs, providing a tailored experience that respects your time and empowers you with knowledge. Join us as we drive towards a future where mobility is personalized, efficient, and exceeds expectations at every turn.</p>
+      </div>
     </div>
+  </div>
+</div>
 
+  <div class="row my-5">
+      <div class="col-md-10">
+        <div class="accordion" id="accordionExample">
+          
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <b style="color: red;">CORE VALUES</b>
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <ul>
+                  <li>
+                    <strong>Customer-Centric</strong>: We prioritize our customers' needs and satisfaction in every decision and action.
+                  </li>
+                  <li>
+                    <strong>integrity</strong>: We conduct our business with honesty, transparency, and ethical practices, building trust with our customers and partners.
+                  </li>
+                  <li>
+                    <strong>Flexibility</strong>: We adapt to changing market conditions and customer preferences, offering versatile solutions for diverse needs.
+                  </li>
+                  <li>
+                    <strong>Innovation</strong>: We continuously seek new ways to improve our services and stay ahead in the rapidly evolving automotive industry.
+                  </li>
+                  <li>
+                    <strong>Sustainability</strong>: We promote environmentally conscious choices and support the transition to greener transportation options.
+                  </li>
+                  <li>
+                    <strong>Quality</strong>: We maintain high standards in our vehicle offerings and services, ensuring reliability and customer satisfaction.
+                  </li>
+                  <li>
+                    <strong>Collaboration</strong>: We foster strong partnerships within the automotive ecosystem to provide comprehensive solutions.
+                  </li>
+                  <li>
+                    <strong>Community Impact</strong>: We strive to positively contribute to the communities we serve through responsible business practices and local engagement.
+                  </li>
+                </ul>
+                
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header bg-warning">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  <b style="color: red;">VISION</b>
+              </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                 To revolutionize the automotive industry by providing a seamless, all-in-one platform for vehicle transactions, fostering a sustainable and flexible approach to car ownership and usage.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <b style="color: red;">MISSION</b>
+              </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                 Our mission is to empower individuals and businesses with innovative, technology-driven solutions for all their automotive needs. We strive to offer a comprehensive range of services including sales, rentals, and swaps, ensuring that every customer finds the perfect vehicle solution tailored to their lifestyle and budget.
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>   
+  </div>
+
+  <div class="row">
+    <div class="col-md-10">
+    </div>
+  </div>
 {% endblock slider%}
 
 

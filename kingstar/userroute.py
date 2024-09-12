@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from .forms import SignupForm, SigninForm, ListingForm, BlogForm, BusForm, TruckForm,MessageForm
 from functools import wraps
 
-from kingstar.models import Users, Contact, Vehicle, Premium_Ads, Listings, Blog, BusListings, TruckListings, Contact
+from kingstar.models import Users, Contact, Vehicle, Premium_Ads, Listings, Blog, BusListings, TruckListings
 from kingstar import app, db
 from werkzeug.utils import secure_filename
 from flask import jsonify
@@ -220,6 +220,7 @@ def about():
     premium_ads = Premium_Ads.query.order_by(Premium_Ads.date.desc()).limit(15).all()
     deets = db.session.query(Users).filter(Users.user_id==cid).first()
     premium_ads_list = [premium_ad_to_dict(ad) for ad in premium_ads]
+    
     return render_template('users/about.html', premium_ads=premium_ads_list, deets=deets, msg_form=msg_form)
 
 
@@ -252,7 +253,7 @@ def messages():
             db.session.rollback()
             flash('An error occurred while sending your message. Please try again.', 'error')
             app.logger.error(f'Database error: {str(e)}')
-        return render_template('users/index.html', msg_form=msg_form, form=form)
+        return redirect(url_for('index'))
     
 @app.route('/post_listing', methods=['GET', 'POST'])
 def post_listing():
